@@ -9,12 +9,13 @@
 import Foundation
 
 class User {
+    internal init(id: Int, email: String) {
+        self.id = id
+        self.email = email
+    }
+    
     var id: Int
     var email: String
     //var events: [Event]
     
-    init(id: Int, email: String) {
-        self.id = id
-        self.email = email
-    }
 }

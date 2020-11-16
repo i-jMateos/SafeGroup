@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>912335552158-ibirue2jukr4v9jr1q69a3pgl31n2m85.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.912335552158-ibirue2jukr4v9jr1q69a3pgl31n2m85</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD2F2WfnY011Hn4IecScxeKaXOhAWKcrws</string>
+	<key>GCM_SENDER_ID</key>
+	<string>912335552158</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>jordimateos.SafeGroup</string>
+	<key>PROJECT_ID</key>
+	<string>safegroup-uoc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>safegroup-uoc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:912335552158:ios:eb853ffd576190e28d858f</string>
+	<key>DATABASE_URL</key>
+	<string>https://safegroup-uoc.firebaseio.com</string>
+</dict>
+</plist>

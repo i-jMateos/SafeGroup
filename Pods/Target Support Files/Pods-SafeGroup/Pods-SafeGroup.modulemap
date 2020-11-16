@@ -1,0 +1,6 @@
+framework module Pods_SafeGroup {
+  umbrella header "Pods-SafeGroup-umbrella.h"
+
+  export *
+  module * { export * }
+}
