@@ -8,7 +8,7 @@
 
 import Foundation
 
-class User {
+class User: Codable {
     internal init(id: Int, email: String) {
         self.id = id
         self.email = email
@@ -18,4 +18,19 @@ class User {
     var email: String
     //var events: [Event]
     
+    enum CodingKeys: String, CodingKey {
+        case id, email
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        email = try container.decode(String.self, forKey: .email)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(email, forKey: .email)
+    }
 }

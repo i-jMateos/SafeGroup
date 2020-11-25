@@ -18,6 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+        if let _ =  Auth.auth().currentUser {
+            let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+            window?.rootViewController = mainController
+            window?.makeKeyAndVisible()
+        } else {
+            let mainController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController()
+            window?.rootViewController = mainController
+            window?.makeKeyAndVisible()
+        }
+        
         return true
     }
 
