@@ -9,12 +9,12 @@
 import Foundation
 
 class User: Codable {
-    internal init(id: Int, email: String) {
+    internal init(id: String, email: String) {
         self.id = id
         self.email = email
     }
     
-    var id: Int
+    var id: String
     var email: String
     //var events: [Event]
     
@@ -24,7 +24,7 @@ class User: Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(Int.self, forKey: .id)
+        id = try container.decode(String.self, forKey: .id)
         email = try container.decode(String.self, forKey: .email)
     }
     

@@ -20,8 +20,12 @@ class CreateEventViewController: UIViewController {
     let db = Firestore.firestore()
     let datepicker = UIDatePicker()
     
+    var eventsReference: DocumentReference? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        eventsReference = db.collection("events").document()
 
         datepicker.preferredDatePickerStyle = .wheels
         startDateTextField.inputAccessoryView = datepicker
@@ -31,14 +35,13 @@ class CreateEventViewController: UIViewController {
     func createEvent(event: Event) {
         guard let eventEncoded = event.dictionary else { return }
         
-        var ref: DocumentReference? = nil
-        ref = db.collection("events").addDocument(data: eventEncoded) { err in
+        eventsReference?.setData(eventEncoded, completion: { (err) in
             if let err = err {
                 print("Error adding document: \(err)")
             } else {
-                print("Document added with ID: \(ref!.documentID)")
+                print("Document added with ID: \(self.eventsReference!.documentID)")
             }
-        }
+        })
     }
     
     @IBAction func createEventButton(_ sender: Any) {
@@ -50,9 +53,10 @@ class CreateEventViewController: UIViewController {
         let description =  "Una descripcion del evento."
         
         let currentUser = Auth.auth().currentUser
-        let user = User(id: 1, email: currentUser?.email ?? "")
+        let user = User(id: currentUser?.uid ?? "", email: currentUser?.email ?? "")
         
-        let event = Event(id: 1, name: title, localitation: Location(latitude: lat, longitude: lon), startDate: startDate, endDate: endDate, eventCode: nil, description: description, user: user, imageUrl: nil)
+        guard let documentId = eventsReference?.documentID else { return }
+        let event = Event(id: documentId, name: title, localitation: Location(latitude: lat, longitude: lon), startDate: startDate, endDate: endDate, eventCode: nil, description: description, user: user, imageUrl: nil, participants: nil)
         
         createEvent(event: event)
     }
