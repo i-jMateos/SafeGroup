@@ -12,18 +12,53 @@
         <!--Mis eventos-->
         <scene sceneID="S0f-SM-jj8">
             <objects>
-                <viewController id="fiy-rw-p3p" sceneMemberID="viewController">
+                <viewController id="fiy-rw-p3p" customClass="MyEventsViewController" customModule="SafeGroup" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="X1S-dH-DpD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="JH2-mU-ZiD">
+                                <rect key="frame" x="0.0" y="125.5" width="414" height="687.5"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="D8A-WF-e9m">
+                                        <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="D8A-WF-e9m" id="uz0-Be-4Gl">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeB-FF-kVq">
+                                <rect key="frame" x="16" y="68" width="382" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Rvv-vP-DDv"/>
-                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JH2-mU-ZiD" firstAttribute="top" secondItem="BeB-FF-kVq" secondAttribute="bottom" constant="24" id="4MF-p3-gHH"/>
+                            <constraint firstItem="Rvv-vP-DDv" firstAttribute="trailing" secondItem="JH2-mU-ZiD" secondAttribute="trailing" id="5ez-X9-b0m"/>
+                            <constraint firstItem="Rvv-vP-DDv" firstAttribute="trailing" secondItem="BeB-FF-kVq" secondAttribute="trailing" constant="16" id="7V5-cg-biK"/>
+                            <constraint firstItem="Rvv-vP-DDv" firstAttribute="bottom" secondItem="JH2-mU-ZiD" secondAttribute="bottom" id="Blc-6Z-Yer"/>
+                            <constraint firstItem="JH2-mU-ZiD" firstAttribute="leading" secondItem="Rvv-vP-DDv" secondAttribute="leading" id="NQf-pr-gId"/>
+                            <constraint firstItem="BeB-FF-kVq" firstAttribute="leading" secondItem="Rvv-vP-DDv" secondAttribute="leading" constant="16" id="PAo-ay-vCa"/>
+                            <constraint firstItem="BeB-FF-kVq" firstAttribute="top" secondItem="Rvv-vP-DDv" secondAttribute="top" constant="24" id="mei-8I-Fy4"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Mis eventos" id="eHP-2m-9rs"/>
+                    <connections>
+                        <outlet property="tableView" destination="JH2-mU-ZiD" id="dkk-zE-goi"/>
+                        <segue destination="h6o-ly-jBh" kind="showDetail" identifier="goToEventDetails" id="gfy-NV-Pea"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G6i-Ya-7lS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="165" y="388"/>
+            <point key="canvasLocation" x="164" y="437"/>
         </scene>
         <!--Mapa-->
         <scene sceneID="8v4-Oa-vaE">
@@ -400,6 +435,9 @@
             <point key="canvasLocation" x="1508.6956521739132" y="-110.49107142857143"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="gfy-NV-Pea"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -409,9 +447,6 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

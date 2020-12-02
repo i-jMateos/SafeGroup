@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol EventDetailsDelegate {
+    func eventDetails(didDeleteEvent event: Event)
+}
+
 class EventDetailsViewController: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
@@ -17,6 +21,8 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var descriptionTextView: UITextView!
+    
+    var delegate: EventDetailsDelegate?
     
     var event: Event!
     
@@ -44,10 +50,12 @@ class EventDetailsViewController: UIViewController {
         descriptionTextView.text = event.description + participants
         
         guard let user = Auth.auth().currentUser else { return }
+        /// Comparar si el usuario actual es el creador del evento.
         if user.email == event.user.email {
             actionButton.setTitle("Eliminar evento", for: .normal)
             actionButton.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         } else {
+            /// Comparar si el usuario se encuentra inscrito en el evento.
             if event.participants?.contains(where: { $0.email == user.email }) ?? false {
                 actionButton.setTitle("Anular registro", for: .normal)
                 actionButton.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
@@ -61,12 +69,34 @@ class EventDetailsViewController: UIViewController {
     @IBAction func actionButtonDidPress(_ sender: Any) {
         guard let user = Auth.auth().currentUser else { return }
         
+        /// Usuario creador del evento. Procedemos a eliminar el evento.
         if user.email == event.user.email {
-            return
+            db.collection("events").document(self.event.id).delete { (err) in
+                if let err = err {
+                    print("Error deleting document: \(err)")
+                } else {
+                    self.delegate?.eventDetails(didDeleteEvent: self.event)
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
         } else {
+            /// Usuario ya inscrito en el evento. Procedemos a anular la inscripcion.
             if event.participants?.contains(where: { $0.email == user.email }) ?? false {
-                return
+                var participants = event.participants ?? []
+                participants.removeAll(where: { $0.email == user.email })
+                let mappedParticipants = participants.map({ $0.dictionary })
+                
+                db.collection("events").document(self.event.id).updateData([
+                    "participants": mappedParticipants
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        self.event.participants = participants
+                    }
+                }
             } else {
+                /// Registro de usuario en el evento.
                 let eventsReference = db.collection("events").document(self.event.id)
 
                 let user = User(id: user.uid, email: user.email ?? "")
@@ -76,7 +106,7 @@ class EventDetailsViewController: UIViewController {
                 let mappedUsers = registeredUsers.map({ $0.dictionary })
                 
                 eventsReference.updateData([
-                    "users": mappedUsers
+                    "participants": mappedUsers
                 ]) { err in
                     if let err = err {
                         print("Error updating document: \(err)")

@@ -57,13 +57,17 @@ class EventsMapViewController: UIViewController {
                     guard let event: Event = try? JSONDecoder().decode(Event.self, from: jsonData!) else { return }
                     self.events?.append(event)
                     
-                    let mkAnnotation = MKPointAnnotation()
-                    mkAnnotation.coordinate = CLLocationCoordinate2D(latitude: event.localitation.latitude, longitude: event.localitation.longitude)
-                    mkAnnotation.title = event.name
-                    self.mapView.addAnnotation(mkAnnotation)
+                    self.createEventAnnotation(event)
                 }
             }
         }
+    }
+    
+    private func createEventAnnotation(_ event: Event) {
+        let mkAnnotation = MKPointAnnotation()
+        mkAnnotation.coordinate = CLLocationCoordinate2D(latitude: event.localitation.latitude, longitude: event.localitation.longitude)
+        mkAnnotation.title = event.name
+        self.mapView.addAnnotation(mkAnnotation)
     }
     
     // MARK: - Navigation
@@ -74,6 +78,7 @@ class EventsMapViewController: UIViewController {
         
         guard let event = sender as? Event else { return }
         destination?.event = event
+        destination?.delegate = self
     }
 }
 
@@ -99,5 +104,18 @@ extension EventsMapViewController: MKMapViewDelegate {
         })
         
         self.performSegue(withIdentifier: "navigateToEventDetails", sender: event)
+    }
+}
+
+extension EventsMapViewController: EventDetailsDelegate {
+    func eventDetails(didDeleteEvent event: Event) {
+        self.events?.removeAll(where: { $0.id == event.id })
+        for annotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        
+        for event in self.events ?? [] {
+            createEventAnnotation(event)
+        }
     }
 }

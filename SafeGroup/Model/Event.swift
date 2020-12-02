@@ -34,7 +34,7 @@ class Event: Codable {
         description = try container.decode(String.self, forKey: .description)
         user = try container.decode(User.self, forKey: .user)
         imageUrl =  try container.decodeIfPresent(String.self, forKey: .imageUrl)
-        participants =  try container.decodeIfPresent([User].self, forKey: .participants)
+        participants = try container.decodeIfPresent([User].self, forKey: .participants)
     }
     
     func encode(to encoder: Encoder) throws {

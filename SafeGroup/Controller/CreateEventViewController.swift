@@ -48,8 +48,8 @@ class CreateEventViewController: UIViewController {
         let title = titleTextField.text ?? ""
         let lat = Double(latTextField.text ?? "0") ?? 0.0
         let lon = Double(lonTextField.text ?? "0") ?? 0.0
-        let startDate = Date()
-        let endDate = Date()
+        let startDate = Date().addingTimeInterval(20000)
+        let endDate = Date().addingTimeInterval(40000)
         let description =  "Una descripcion del evento."
         
         let currentUser = Auth.auth().currentUser

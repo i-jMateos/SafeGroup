@@ -25,6 +25,10 @@
 		7C8142AF255EE16600E83E8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C8142AE255EE16600E83E8E /* GoogleService-Info.plist */; };
 		7C8142B1255EEA9E00E83E8E /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8142B0255EEA9E00E83E8E /* UserProfileViewController.swift */; };
 		7C955FCB256C277900C6ED89 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C955FCA256C277900C6ED89 /* EventDetailsViewController.swift */; };
+		7C95602125755F4800C6ED89 /* MyEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C95602025755F4800C6ED89 /* MyEventsViewController.swift */; };
+		7C9560252575603400C6ED89 /* MyEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9560232575603400C6ED89 /* MyEventTableViewCell.swift */; };
+		7C9560262575603400C6ED89 /* MyEventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C9560242575603400C6ED89 /* MyEventTableViewCell.xib */; };
+		7C95603F2576AFC400C6ED89 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C95603E2576AFC400C6ED89 /* Date+.swift */; };
 		7CB5C1592562EA0800E150B9 /* EventsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5C1582562EA0800E150B9 /* EventsMapViewController.swift */; };
 		7CF3D09625642B720070D8AC /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF3D09525642B720070D8AC /* CreateEventViewController.swift */; };
 		7CF3D0B02566DED10070D8AC /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF3D0AF2566DED10070D8AC /* Encodable+.swift */; };
@@ -54,6 +58,10 @@
 		7C8142AE255EE16600E83E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C8142B0255EEA9E00E83E8E /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		7C955FCA256C277900C6ED89 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		7C95602025755F4800C6ED89 /* MyEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsViewController.swift; sourceTree = "<group>"; };
+		7C9560232575603400C6ED89 /* MyEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventTableViewCell.swift; sourceTree = "<group>"; };
+		7C9560242575603400C6ED89 /* MyEventTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyEventTableViewCell.xib; sourceTree = "<group>"; };
+		7C95603E2576AFC400C6ED89 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		7CB5C1582562EA0800E150B9 /* EventsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsMapViewController.swift; sourceTree = "<group>"; };
 		7CF3D09525642B720070D8AC /* CreateEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
 		7CF3D0AF2566DED10070D8AC /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
@@ -108,7 +116,7 @@
 				7C2720C7255C5E6900ABBFE0 /* Helpers */,
 				7C2720C5255C5E2B00ABBFE0 /* Supporting Files */,
 				7C2720C2255C5C5400ABBFE0 /* Model */,
-				7C2720C1255C5C4E00ABBFE0 /* Vew */,
+				7C2720C1255C5C4E00ABBFE0 /* View */,
 				7C2720C0255C5C3E00ABBFE0 /* Controller */,
 				7C2720B5255C525000ABBFE0 /* Assets.xcassets */,
 				7C2720BA255C525000ABBFE0 /* Info.plist */,
@@ -119,6 +127,7 @@
 		7C2720C0255C5C3E00ABBFE0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7C95601F25755F2C00C6ED89 /* MyEvents */,
 				7C2720B0255C524F00ABBFE0 /* ViewController.swift */,
 				7C2720CC255C628C00ABBFE0 /* LoginViewController.swift */,
 				7CF3D09525642B720070D8AC /* CreateEventViewController.swift */,
@@ -130,11 +139,11 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		7C2720C1255C5C4E00ABBFE0 /* Vew */ = {
+		7C2720C1255C5C4E00ABBFE0 /* View */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = Vew;
+			path = View;
 			sourceTree = "<group>";
 		};
 		7C2720C2255C5C5400ABBFE0 /* Model */ = {
@@ -175,8 +184,19 @@
 			children = (
 				7C8142AC255DA86D00E83E8E /* UIViewController+.swift */,
 				7CF3D0AF2566DED10070D8AC /* Encodable+.swift */,
+				7C95603E2576AFC400C6ED89 /* Date+.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7C95601F25755F2C00C6ED89 /* MyEvents */ = {
+			isa = PBXGroup;
+			children = (
+				7C95602025755F4800C6ED89 /* MyEventsViewController.swift */,
+				7C9560232575603400C6ED89 /* MyEventTableViewCell.swift */,
+				7C9560242575603400C6ED89 /* MyEventTableViewCell.xib */,
+			);
+			path = MyEvents;
 			sourceTree = "<group>";
 		};
 		9EFE626F2C86A2D794AD9D7F /* Frameworks */ = {
@@ -249,6 +269,7 @@
 			files = (
 				7C2720CB255C618000ABBFE0 /* Login.storyboard in Resources */,
 				7C2720B9255C525000ABBFE0 /* LaunchScreen.storyboard in Resources */,
+				7C9560262575603400C6ED89 /* MyEventTableViewCell.xib in Resources */,
 				7C8142AF255EE16600E83E8E /* GoogleService-Info.plist in Resources */,
 				7C2720B6255C525000ABBFE0 /* Assets.xcassets in Resources */,
 				7C2720B4255C524F00ABBFE0 /* Main.storyboard in Resources */,
@@ -311,12 +332,15 @@
 				7C8142AD255DA86D00E83E8E /* UIViewController+.swift in Sources */,
 				7C2720C4255C5CC600ABBFE0 /* User.swift in Sources */,
 				7C2720D5255D405700ABBFE0 /* Location.swift in Sources */,
+				7C95603F2576AFC400C6ED89 /* Date+.swift in Sources */,
 				7CB5C1592562EA0800E150B9 /* EventsMapViewController.swift in Sources */,
 				7C2720D3255D3FEE00ABBFE0 /* EventStatus.swift in Sources */,
 				7C2720CF255D30B900ABBFE0 /* EventPost.swift in Sources */,
 				7C2720B1255C524F00ABBFE0 /* ViewController.swift in Sources */,
 				7C2720AD255C524F00ABBFE0 /* AppDelegate.swift in Sources */,
 				7CFE62722562BF8000547EE4 /* RegisterViewController.swift in Sources */,
+				7C9560252575603400C6ED89 /* MyEventTableViewCell.swift in Sources */,
+				7C95602125755F4800C6ED89 /* MyEventsViewController.swift in Sources */,
 				7C2720D1255D34C200ABBFE0 /* EventAlert.swift in Sources */,
 				7C2720C9255C605000ABBFE0 /* Event.swift in Sources */,
 				7CF3D09625642B720070D8AC /* CreateEventViewController.swift in Sources */,
