@@ -25,6 +25,8 @@ class EventsMapViewController: UIViewController {
         super.viewDidLoad()
 
         mapView.delegate = self
+        
+        addTapGestureToMap()
         getEvents()
     }
     
@@ -42,6 +44,12 @@ class EventsMapViewController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    func addTapGestureToMap() {
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
+        gestureRecognizer.delegate = self
+        mapView.addGestureRecognizer(gestureRecognizer)
     }
     
     private func getEvents() {
@@ -68,6 +76,19 @@ class EventsMapViewController: UIViewController {
         mkAnnotation.coordinate = CLLocationCoordinate2D(latitude: event.localitation.latitude, longitude: event.localitation.longitude)
         mkAnnotation.title = event.name
         self.mapView.addAnnotation(mkAnnotation)
+    }
+    
+    @objc func handleMapTap(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let location = gestureRecognizer.location(in: mapView)
+        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(identifier: "CreateEventViewController") as! CreateEventViewController
+        
+        viewController.latitude = coordinate.latitude
+        viewController.longitude = coordinate.longitude
+        
+        self.present(viewController, animated: true, completion: nil)
     }
     
     // MARK: - Navigation
@@ -118,4 +139,8 @@ extension EventsMapViewController: EventDetailsDelegate {
             createEventAnnotation(event)
         }
     }
+}
+
+extension EventsMapViewController: UIGestureRecognizerDelegate {
+    
 }

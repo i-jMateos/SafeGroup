@@ -13,9 +13,19 @@ class UserProfileViewController: UIViewController {
 
     @IBOutlet weak var emailLabel: UILabel!
     
+    @IBOutlet weak var nameLabel: UITextField!
+    
+    @IBOutlet weak var lastnameLabel: UITextField!
+    
+    @IBOutlet weak var signoutLabel: UIButton!
+    
+    @IBOutlet weak var imageProfileLabel: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.imageProfileLabel.layer.cornerRadius = self.imageProfileLabel.frame.width/4.0
+        
         let currentUser = Auth.auth().currentUser
         emailLabel.text = currentUser?.email
     }

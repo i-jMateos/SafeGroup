@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 class CreateEventViewController: UIViewController {
 
@@ -18,18 +19,35 @@ class CreateEventViewController: UIViewController {
     @IBOutlet weak var lonTextField: UITextField!
     
     let db = Firestore.firestore()
-    let datepicker = UIDatePicker()
+    var datepicker = UIDatePicker()
     
     var eventsReference: DocumentReference? = nil
+    
+    var latitude: Double?
+    var longitude: Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hideKeyboardWhenTappedAround()
+        
         eventsReference = db.collection("events").document()
 
-        datepicker.preferredDatePickerStyle = .wheels
-        startDateTextField.inputAccessoryView = datepicker
-        // Do any additional setup after loading the view.
+        createDatePicker()
+        setupUI()
+    }
+    
+    private func setupUI() {
+        if let latitude = self.latitude, let longitude = self.longitude {
+            self.latTextField.text = "\(latitude)"
+            self.lonTextField.text = "\(longitude)"
+            
+            self.geocode(latitude: latitude, longitude: longitude) { (placemark, error) in
+                if let placemark = placemark?.first {
+                    self.titleTextField.text = placemark.locality
+                }
+            }
+        }
     }
     
     func createEvent(event: Event) {
@@ -42,6 +60,16 @@ class CreateEventViewController: UIViewController {
                 print("Document added with ID: \(self.eventsReference!.documentID)")
             }
         })
+    }
+    
+    func geocode(latitude: Double, longitude: Double, completion: @escaping (_ placemark: [CLPlacemark]?, _ error: Error?) -> Void)  {
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: latitude, longitude: longitude)) { placemark, error in
+            guard let placemark = placemark, error == nil else {
+                completion(nil, error)
+                return
+            }
+            completion(placemark, nil)
+        }
     }
     
     @IBAction func createEventButton(_ sender: Any) {
@@ -62,15 +90,35 @@ class CreateEventViewController: UIViewController {
     }
     
     func createDatePicker() {
-    
-    let toolbar = UIToolbar()
-        toolbar.sizeToFit()
+        datepicker = UIDatePicker()
+        datepicker.minimumDate = Date()
+        datepicker.preferredDatePickerStyle = .wheels
+        datepicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
-        _ = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
-        
-        startDateTextField.inputAccessoryView = toolbar
-    
         startDateTextField.inputView = datepicker
+        
+        endDateTextField.inputView = datepicker
+    }
+    
+    @objc func dateChanged(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        
+        if startDateTextField.isFirstResponder {
+            self.startDateTextField.text = dateFormatter.string(from: sender.date)
+        } else if endDateTextField.isFirstResponder {
+            self.endDateTextField.text = dateFormatter.string(from: sender.date)
+        }
+        
+        /// No permitir fecha de fin anterior a la de inicio.
+        if let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
+           let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") {
+            if endDate < startDate {
+                self.endDateTextField.text = dateFormatter.string(from: startDate)
+            }
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -81,6 +129,6 @@ class CreateEventViewController: UIViewController {
     }
     */
 
-}
+
 
 }
