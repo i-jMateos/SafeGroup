@@ -10,21 +10,34 @@ import UIKit
 import Firebase
 import MapKit
 
+protocol CreateEventViewDelegate {
+    func eventCreated(event: Event)
+}
+
 class CreateEventViewController: UIViewController {
 
-    @IBOutlet weak var latTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var endDateTextField: UITextField!
     @IBOutlet weak var startDateTextField: UITextField!
-    @IBOutlet weak var lonTextField: UITextField!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var eventDescriptionTextView: UITextView!
     
-    let db = Firestore.firestore()
     var datepicker = UIDatePicker()
     
+    let db = Firestore.firestore()
     var eventsReference: DocumentReference? = nil
+    
+    var delegate: CreateEventViewDelegate?
     
     var latitude: Double?
     var longitude: Double?
+    
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        return formatter
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,13 +51,24 @@ class CreateEventViewController: UIViewController {
     }
     
     private func setupUI() {
+        eventDescriptionTextView.layer.borderWidth = 0.5
+        eventDescriptionTextView.layer.cornerRadius = 8
+        eventDescriptionTextView.layer.borderColor = UIColor.darkGray.cgColor
+        
+        self.startDateTextField.delegate = self
+        self.endDateTextField.delegate = self
+        
         if let latitude = self.latitude, let longitude = self.longitude {
-            self.latTextField.text = "\(latitude)"
-            self.lonTextField.text = "\(longitude)"
             
             self.geocode(latitude: latitude, longitude: longitude) { (placemark, error) in
                 if let placemark = placemark?.first {
-                    self.titleTextField.text = placemark.locality
+                    
+                    let address = [placemark.name ?? "",
+                                   placemark.locality ?? "",
+                                   placemark.postalCode ?? "",
+                        placemark.country ?? ""].joined(separator: ", ")
+                                   
+                    self.addressLabel.text = address
                 }
             }
         }
@@ -58,6 +82,8 @@ class CreateEventViewController: UIViewController {
                 print("Error adding document: \(err)")
             } else {
                 print("Document added with ID: \(self.eventsReference!.documentID)")
+                self.delegate?.eventCreated(event: event)
+                self.dismiss(animated: true, completion: nil)
             }
         })
     }
@@ -72,13 +98,20 @@ class CreateEventViewController: UIViewController {
         }
     }
     
+    // TODO: Crear vista para mostrar mensaje de error.
     @IBAction func createEventButton(_ sender: Any) {
         let title = titleTextField.text ?? ""
-        let lat = Double(latTextField.text ?? "0") ?? 0.0
-        let lon = Double(lonTextField.text ?? "0") ?? 0.0
-        let startDate = Date().addingTimeInterval(20000)
-        let endDate = Date().addingTimeInterval(40000)
-        let description =  "Una descripcion del evento."
+        
+        /// No permitir crear un evento si las coordenadas son nulas.
+        guard let lat = self.latitude, let lon = self.longitude else { return }
+        
+        /// No permitir crear un evento si las fechas son incorrectas.
+        guard let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
+        let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") else {
+            return
+        }
+        
+        let description = self.eventDescriptionTextView.text ?? ""
         
         let currentUser = Auth.auth().currentUser
         let user = User(id: currentUser?.uid ?? "", email: currentUser?.email ?? "")
@@ -91,19 +124,15 @@ class CreateEventViewController: UIViewController {
     
     func createDatePicker() {
         datepicker = UIDatePicker()
-        datepicker.minimumDate = Date()
-        datepicker.preferredDatePickerStyle = .wheels
+        datepicker.minimumDate = Date().addingTimeInterval(3600)
+        
         datepicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
         startDateTextField.inputView = datepicker
-        
         endDateTextField.inputView = datepicker
     }
     
     @objc func dateChanged(_ sender: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
-        
         if startDateTextField.isFirstResponder {
             self.startDateTextField.text = dateFormatter.string(from: sender.date)
         } else if endDateTextField.isFirstResponder {
@@ -119,6 +148,10 @@ class CreateEventViewController: UIViewController {
         }
     }
     
+    @IBAction func doneButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -131,4 +164,15 @@ class CreateEventViewController: UIViewController {
 
 
 
+}
+
+extension CreateEventViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == self.endDateTextField {
+            guard let startDateText = self.startDateTextField.text, let startDate = dateFormatter.date(from: startDateText) else { return }
+            self.datepicker.minimumDate = startDate
+        } else {
+            self.datepicker.minimumDate = Date().addingTimeInterval(3600)
+        }
+    }
 }
