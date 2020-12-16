@@ -16,6 +16,7 @@ class EventsMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
 
     var locationManager: CLLocationManager!
+    var currentLocation = CLLocation()
 
     let db = Firestore.firestore()
     
@@ -34,6 +35,7 @@ class EventsMapViewController: UIViewController {
         super.viewDidAppear(animated)
         
         determineUserLocation()
+        setupUserLocation()
     }
     
     private func determineUserLocation() {
@@ -83,12 +85,39 @@ class EventsMapViewController: UIViewController {
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(identifier: "CreateEventViewController") as! CreateEventViewController
+        let viewController =
+        storyboard.instantiateViewController(withIdentifier: "CreateEventViewController") as! CreateEventViewController
+        viewController.delegate = self
         
         viewController.latitude = coordinate.latitude
         viewController.longitude = coordinate.longitude
         
         self.present(viewController, animated: true, completion: nil)
+    }
+    
+    func setupUserLocation() {
+        self.locationManager.requestWhenInUseAuthorization()
+            if CLLocationManager.locationServicesEnabled() {
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            }
+
+            let locManager = CLLocationManager()
+            locManager.requestWhenInUseAuthorization()
+
+            if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways) {
+                currentLocation = locManager.location!
+            }
+
+            print("currentLongitude: \(currentLocation.coordinate.longitude)")
+            print("currentLatitude: \(currentLocation.coordinate.latitude)")
+
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let center = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: span)
+        
+        mapView.setRegion(region, animated: true)
     }
     
     // MARK: - Navigation
@@ -105,13 +134,14 @@ class EventsMapViewController: UIViewController {
 
 extension EventsMapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let userLocation: CLLocation = locations.first else { return }
         
-        let center: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
-        
-        let mRegion = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-
-        mapView.setRegion(mRegion, animated: true)
+//        guard let userLocation: CLLocation = locations.first else { return }
+//        
+//        let center: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+//        
+//        let mRegion = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+//
+//        mapView.setRegion(mRegion, animated: true)
     }
 }
 
@@ -120,9 +150,9 @@ extension EventsMapViewController: MKMapViewDelegate {
         guard let lat = view.annotation?.coordinate.latitude,
               let lon = view.annotation?.coordinate.longitude else { return }
         
-        let event = events?.first(where: {
-            $0.localitation.latitude == lat.magnitude && $0.localitation.longitude == lon.magnitude
-        })
+        guard let event = events?.first(where: {
+            $0.localitation.latitude == lat && $0.localitation.longitude == lon
+        }) else { return }
         
         self.performSegue(withIdentifier: "navigateToEventDetails", sender: event)
     }
@@ -143,4 +173,10 @@ extension EventsMapViewController: EventDetailsDelegate {
 
 extension EventsMapViewController: UIGestureRecognizerDelegate {
     
+}
+
+extension EventsMapViewController: CreateEventViewDelegate {
+    func eventCreated(event: Event) {
+        createEventAnnotation(event)
+    }
 }
