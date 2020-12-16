@@ -37,34 +37,69 @@ class MyEventsViewController: UIViewController {
         self.pastEvents = []
         
         guard let currentUser = Auth.auth().currentUser else { return }
-    
+        
+        /// Recuperar eventos en los que el usuario esta inscrito.
         guard let user = User(id: currentUser.uid, email: currentUser.email ?? "").dictionary else { return }
-        db.collection("events").whereField("participants", arrayContains: user).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let dict = document.data()
-                    let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: [])
-
-                    guard let event: Event = try? JSONDecoder().decode(Event.self, from: jsonData!) else { return }
+        db.collection("events")
+            .whereField("participants", arrayContains: user)
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let dict = document.data()
+                        let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: [])
+                        
+                        guard let event: Event = try? JSONDecoder().decode(Event.self, from: jsonData!) else { return }
+                        
+                        /// Eventos pasados
+                        if event.endDate <= Date() {
+                            self.pastEvents?.append(event)
+                            /// Eventos futuros
+                        } else if event.startDate > Date() {
+                            self.futureEvents?.append(event)
+                            /// Evento actual
+                        } else if Date().isBetween(startDate: event.startDate, endDate: event.endDate) {
+                            self.currentEvent = event
+                        }
+                    }
                     
-                    /// Eventos pasados
-                    if event.endDate <= Date() {
-                        self.pastEvents?.append(event)
-                    /// Eventos futuros
-                    } else if event.startDate > Date() {
-                        self.futureEvents?.append(event)
-                    /// Evento actual
-                    } else if Date().isBetween(startDate: event.startDate, endDate: event.endDate) {
-                        self.currentEvent = event
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+        }
+            
+        /// Recuperar eventos creados por el usuario.
+        self.db.collection("events")
+            .whereField("user", isEqualTo: user)
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let dict = document.data()
+                        let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: [])
+                        
+                        guard let event: Event = try? JSONDecoder().decode(Event.self, from: jsonData!) else { return }
+                        
+                        /// Eventos pasados
+                        if event.endDate <= Date() {
+                            self.pastEvents?.append(event)
+                            /// Eventos futuros
+                        } else if event.startDate > Date() {
+                            self.futureEvents?.append(event)
+                            /// Evento actual
+                        } else if Date().isBetween(startDate: event.startDate, endDate: event.endDate) {
+                            self.currentEvent = event
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
                     }
                 }
                 
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
         }
     }
 
