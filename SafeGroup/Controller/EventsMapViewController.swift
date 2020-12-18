@@ -177,6 +177,7 @@ extension EventsMapViewController: UIGestureRecognizerDelegate {
 
 extension EventsMapViewController: CreateEventViewDelegate {
     func eventCreated(event: Event) {
+        self.events?.append(event)
         createEventAnnotation(event)
     }
 }

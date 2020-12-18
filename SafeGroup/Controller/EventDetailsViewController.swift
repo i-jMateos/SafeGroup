@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 protocol EventDetailsDelegate {
     func eventDetails(didDeleteEvent event: Event)
@@ -21,6 +22,8 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var participantsTableView: UITableView!
+    @IBOutlet weak var participantsTableHeightConstraint: NSLayoutConstraint!
     
     var delegate: EventDetailsDelegate?
     
@@ -36,14 +39,29 @@ class EventDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.participantsTableView.delegate = self
+        self.participantsTableView.dataSource = self
+        let nib: UINib = UINib(nibName: ParticipantTableViewCell.reuseIdentifier, bundle: nil)
+        self.participantsTableView.register(nib, forCellReuseIdentifier: ParticipantTableViewCell.reuseIdentifier)
+        self.participantsTableView.rowHeight = 64
 
         setupView(with: event)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        participantsTableHeightConstraint.constant = participantsTableView.contentSize.height
     }
     
     private func setupView(with event: Event) {
         titleLabel.text = event.name
         startDateLabel.text = dateFormatter.string(from: event.startDate)
         endDateLabel.text = dateFormatter.string(from: event.endDate)
+        if let imageUrl = event.imageUrl {
+            self.imageView.kf.setImage(with: URL(string: imageUrl))
+        }
         
         let participants = event.participants?.compactMap({ $0.email }).joined(separator: " : ") ?? ""
         
@@ -55,6 +73,8 @@ class EventDetailsViewController: UIViewController {
             actionButton.setTitle("Eliminar evento", for: .normal)
             actionButton.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         } else {
+            actionButton.isHidden = event.endDate <= Date()
+            actionButton.isHidden = event.startDate <= Date()
             /// Comparar si el usuario se encuentra inscrito en el evento.
             if event.participants?.contains(where: { $0.email == user.email }) ?? false {
                 actionButton.setTitle("Anular registro", for: .normal)
@@ -94,6 +114,9 @@ class EventDetailsViewController: UIViewController {
                     } else {
                         self.event.participants = participants
                     }
+                    
+                    self.delegate?.eventDetails(didDeleteEvent: self.event)
+                    self.dismiss(animated: true, completion: nil)
                 }
             } else {
                 /// Registro de usuario en el evento.
@@ -113,6 +136,8 @@ class EventDetailsViewController: UIViewController {
                     } else {
                         print("Document successfully updated")
                     }
+                    
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }
@@ -121,6 +146,7 @@ class EventDetailsViewController: UIViewController {
     @IBAction func closeButtonDidPress(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
     /*
     // MARK: - Navigation
 
@@ -131,4 +157,24 @@ class EventDetailsViewController: UIViewController {
     }
     */
 
+}
+
+extension EventDetailsViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return event.participants?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ParticipantTableViewCell.reuseIdentifier, for: indexPath) as! ParticipantTableViewCell
+        
+        guard let user = event.participants?[indexPath.row] else { return cell }
+        cell.setupView(for: user)
+
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Participantes"
+    }
+    
 }

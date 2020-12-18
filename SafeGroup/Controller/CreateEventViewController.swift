@@ -15,22 +15,27 @@ protocol CreateEventViewDelegate {
 }
 
 class CreateEventViewController: UIViewController {
-
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var endDateTextField: UITextField!
     @IBOutlet weak var startDateTextField: UITextField!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var eventDescriptionTextView: UITextView!
+    @IBOutlet weak var addImagesButton: UIButton!
+    @IBOutlet weak var eventImageView: UIImageView!
     
     var datepicker = UIDatePicker()
     
     let db = Firestore.firestore()
     var eventsReference: DocumentReference? = nil
     
+    let storage = Storage.storage()
+    
     var delegate: CreateEventViewDelegate?
     
     var latitude: Double?
     var longitude: Double?
+    var eventImages: UIImage?
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -45,7 +50,7 @@ class CreateEventViewController: UIViewController {
         self.hideKeyboardWhenTappedAround()
         
         eventsReference = db.collection("events").document()
-
+        
         createDatePicker()
         setupUI()
     }
@@ -66,9 +71,10 @@ class CreateEventViewController: UIViewController {
                     let address = [placemark.name ?? "",
                                    placemark.locality ?? "",
                                    placemark.postalCode ?? "",
-                        placemark.country ?? ""].joined(separator: ", ")
-                                   
+                                   placemark.country ?? ""].joined(separator: ", ")
+                    
                     self.addressLabel.text = address
+                    self.view.layoutIfNeeded()
                 }
             }
         }
@@ -77,6 +83,7 @@ class CreateEventViewController: UIViewController {
     func createEvent(event: Event) {
         guard let eventEncoded = event.dictionary else { return }
         
+        self.showLoading(onView: self.view)
         eventsReference?.setData(eventEncoded, completion: { (err) in
             if let err = err {
                 print("Error adding document: \(err)")
@@ -85,6 +92,8 @@ class CreateEventViewController: UIViewController {
                 self.delegate?.eventCreated(event: event)
                 self.dismiss(animated: true, completion: nil)
             }
+            
+            self.removeLoading()
         })
     }
     
@@ -98,6 +107,40 @@ class CreateEventViewController: UIViewController {
         }
     }
     
+    @IBAction func addImagesButtonAction(_ sender: UIButton) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        let alertController = UIAlertController(title: "Select an option", message: "Message", preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default) { (action) in
+                imagePicker.sourceType = .camera
+                imagePicker.allowsEditing = true
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+            
+            alertController.addAction(cameraAction)
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (action) in
+                imagePicker.sourceType = .photoLibrary
+                imagePicker.allowsEditing = true
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+            
+            alertController.addAction(photoLibraryAction)
+        }
+        
+        alertController.popoverPresentationController?.sourceView = sender
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
     // TODO: Crear vista para mostrar mensaje de error.
     @IBAction func createEventButton(_ sender: Any) {
         let title = titleTextField.text ?? ""
@@ -107,8 +150,8 @@ class CreateEventViewController: UIViewController {
         
         /// No permitir crear un evento si las fechas son incorrectas.
         guard let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
-        let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") else {
-            return
+            let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") else {
+                return
         }
         
         let description = self.eventDescriptionTextView.text ?? ""
@@ -119,7 +162,29 @@ class CreateEventViewController: UIViewController {
         guard let documentId = eventsReference?.documentID else { return }
         let event = Event(id: documentId, name: title, localitation: Location(latitude: lat, longitude: lon), startDate: startDate, endDate: endDate, eventCode: nil, description: description, user: user, imageUrl: nil, participants: nil)
         
-        createEvent(event: event)
+        self.showLoading(onView: self.view)
+        if let imageData = self.eventImageView.image?.jpegData(compressionQuality: 80) {
+            let storageRef = storage.reference()
+            let eventsRef = storageRef.child("images/\(event.id).jpg")
+            
+            let uploadTask = eventsRef.putData(imageData, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                
+                eventsRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                        // Uh-oh, an error occurred!
+                        return
+                    }
+                    event.imageUrl = downloadURL.absoluteString
+                    self.createEvent(event: event)
+                }
+                
+                self.removeLoading()
+            }
+        }
     }
     
     func createDatePicker() {
@@ -141,7 +206,7 @@ class CreateEventViewController: UIViewController {
         
         /// No permitir fecha de fin anterior a la de inicio.
         if let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
-           let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") {
+            let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") {
             if endDate < startDate {
                 self.endDateTextField.text = dateFormatter.string(from: startDate)
             }
@@ -153,17 +218,17 @@ class CreateEventViewController: UIViewController {
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+    
+    
 }
 
 extension CreateEventViewController: UITextFieldDelegate {
@@ -174,5 +239,19 @@ extension CreateEventViewController: UITextFieldDelegate {
         } else {
             self.datepicker.minimumDate = Date().addingTimeInterval(3600)
         }
+    }
+}
+
+extension CreateEventViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else { return }
+        
+        self.eventImageView.image = image
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

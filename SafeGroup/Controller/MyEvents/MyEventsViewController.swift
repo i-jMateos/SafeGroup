@@ -8,10 +8,21 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 class MyEventsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+                     #selector(MyEventsViewController.handleRefresh(_:)),
+                                 for: .valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
     
     var currentEvent: Event?
     var futureEvents: [Event]? = [Event]()
@@ -27,6 +38,11 @@ class MyEventsViewController: UIViewController {
         
         let nib = UINib(nibName: MyEventTableViewCell.reuseIdentifier, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: MyEventTableViewCell.reuseIdentifier)
+        tableView.addSubview(self.refreshControl)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         getMyEvents()
     }
@@ -65,6 +81,7 @@ class MyEventsViewController: UIViewController {
                     }
                     
                     DispatchQueue.main.async {
+                        self.refreshControl.endRefreshing()
                         self.tableView.reloadData()
                     }
                 }
@@ -96,11 +113,16 @@ class MyEventsViewController: UIViewController {
                     }
                     
                     DispatchQueue.main.async {
+                        self.refreshControl.endRefreshing()
                         self.tableView.reloadData()
                     }
                 }
                 
         }
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.getMyEvents()
     }
 
     
@@ -111,6 +133,7 @@ class MyEventsViewController: UIViewController {
         guard let event = sender as? Event else { return }
         
         let destination = segue.destination as? EventDetailsViewController
+        destination?.delegate = self
         destination?.event = event
     }
 
@@ -141,10 +164,19 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.section {
         case 0:
             cell.titleLabel.text = self.currentEvent?.name
+            if let imageUrl = self.currentEvent?.imageUrl {
+                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
+            }
         case 1:
             cell.titleLabel.text = self.futureEvents?[indexPath.row].name
+            if let imageUrl = self.futureEvents?[indexPath.row].imageUrl {
+                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
+            }
         case 2:
             cell.titleLabel.text = self.pastEvents?[indexPath.row].name
+            if let imageUrl = self.pastEvents?[indexPath.row].imageUrl {
+                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
+            }
         default:
             break
         }
@@ -180,5 +212,12 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         self.performSegue(withIdentifier: "goToEventDetails", sender: event)
+    }
+}
+
+extension MyEventsViewController: EventDetailsDelegate {
+    func eventDetails(didDeleteEvent event: Event) {
+        self.futureEvents?.removeAll(where: { $0.id == event.id })
+        self.tableView.reloadData()
     }
 }

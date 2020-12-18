@@ -36,10 +36,14 @@
 	<string>Necesitamos conocer tu ubicacion para mostrate eventos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Permite a la app conocer tu ubicacion</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Permite a la app conocer tu ubicacion</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Permite a la app conocer tu ubicacion</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Permite a la app conocer tu ubicacion</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Permite a la app utilizar la camara para tomar fotos para los eventos.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Permite a la app seleccionar imagenes de tu libreria para los eventos.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
