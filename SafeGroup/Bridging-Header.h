@@ -2,7 +2,7 @@
 //  Bridging-Header.h
 //  SafeGroup
 //
-//  Created by omaestra on 18/12/2020.
+//  Created by Jordi Mateos Manchado on 18/12/2020.
 //  Copyright © 2020 Jordi Mateos Manchado. All rights reserved.
 //
 

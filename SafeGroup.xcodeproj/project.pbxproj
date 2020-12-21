@@ -37,6 +37,12 @@
 		CE889147258A11A9005C07A7 /* ParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE889145258A11A9005C07A7 /* ParticipantTableViewCell.swift */; };
 		CE889148258A11A9005C07A7 /* ParticipantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */; };
 		CE88914A258BBB78005C07A7 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */; };
+		CE88914E258CD35A005C07A7 /* ActiveEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */; };
+		CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */; };
+		CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */; };
+		CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */; };
+		CEEDFFD92590DDBA00D5ADE5 /* DLEdge.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD62590DDB800D5ADE5 /* DLEdge.m */; };
+		CEEDFFDA2590DDBA00D5ADE5 /* DLGraphScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD72590DDB900D5ADE5 /* DLGraphScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +80,17 @@
 		CE889145258A11A9005C07A7 /* ParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantTableViewCell.swift; sourceTree = "<group>"; };
 		CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParticipantTableViewCell.xib; sourceTree = "<group>"; };
 		CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveEventViewController.swift; sourceTree = "<group>"; };
+		CEEDFFC9258CD75600D5ADE5 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNode.swift; sourceTree = "<group>"; };
+		CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGraphView.swift; sourceTree = "<group>"; };
+		CEEDFFD12590DDAD00D5ADE5 /* DLEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLEdge.h; sourceTree = "<group>"; };
+		CEEDFFD22590DDB300D5ADE5 /* DLForcedGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLForcedGraphView.h; sourceTree = "<group>"; };
+		CEEDFFD32590DDB400D5ADE5 /* DLGraphScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGraphScene.h; sourceTree = "<group>"; };
+		CEEDFFD42590DDB500D5ADE5 /* DLGraphScene+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DLGraphScene+Private.h"; sourceTree = "<group>"; };
+		CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLForcedGraphView.m; sourceTree = "<group>"; };
+		CEEDFFD62590DDB800D5ADE5 /* DLEdge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLEdge.m; sourceTree = "<group>"; };
+		CEEDFFD72590DDB900D5ADE5 /* DLGraphScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGraphScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +143,7 @@
 				7C2720C0255C5C3E00ABBFE0 /* Controller */,
 				7C2720B5255C525000ABBFE0 /* Assets.xcassets */,
 				7C2720BA255C525000ABBFE0 /* Info.plist */,
+				CEEDFFC9258CD75600D5ADE5 /* Bridging-Header.h */,
 			);
 			path = SafeGroup;
 			sourceTree = "<group>";
@@ -141,6 +159,7 @@
 				7CF3D09525642B720070D8AC /* CreateEventViewController.swift */,
 				7CB5C1582562EA0800E150B9 /* EventsMapViewController.swift */,
 				7C955FCA256C277900C6ED89 /* EventDetailsViewController.swift */,
+				CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -155,6 +174,7 @@
 				7C2720D0255D34C200ABBFE0 /* EventAlert.swift */,
 				7C2720D4255D405700ABBFE0 /* Location.swift */,
 				7C2720D2255D3FEE00ABBFE0 /* EventStatus.swift */,
+				CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -209,9 +229,17 @@
 		CE889144258A1194005C07A7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CEEDFFD12590DDAD00D5ADE5 /* DLEdge.h */,
+				CEEDFFD62590DDB800D5ADE5 /* DLEdge.m */,
+				CEEDFFD22590DDB300D5ADE5 /* DLForcedGraphView.h */,
+				CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */,
+				CEEDFFD32590DDB400D5ADE5 /* DLGraphScene.h */,
+				CEEDFFD72590DDB900D5ADE5 /* DLGraphScene.m */,
+				CEEDFFD42590DDB500D5ADE5 /* DLGraphScene+Private.h */,
 				CE889145258A11A9005C07A7 /* ParticipantTableViewCell.swift */,
 				CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */,
 				CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */,
+				CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -336,21 +364,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C2720CD255C628C00ABBFE0 /* LoginViewController.swift in Sources */,
+				CEEDFFD92590DDBA00D5ADE5 /* DLEdge.m in Sources */,
 				7C8142B1255EEA9E00E83E8E /* UserProfileViewController.swift in Sources */,
 				7C2720D7255D40D900ABBFE0 /* Role.swift in Sources */,
 				7CF3D0B02566DED10070D8AC /* Encodable+.swift in Sources */,
 				7C8142AD255DA86D00E83E8E /* UIViewController+.swift in Sources */,
 				7C2720C4255C5CC600ABBFE0 /* User.swift in Sources */,
+				CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */,
 				7C2720D5255D405700ABBFE0 /* Location.swift in Sources */,
 				7C95603F2576AFC400C6ED89 /* Date+.swift in Sources */,
 				7CB5C1592562EA0800E150B9 /* EventsMapViewController.swift in Sources */,
 				7C2720D3255D3FEE00ABBFE0 /* EventStatus.swift in Sources */,
 				7C2720CF255D30B900ABBFE0 /* EventPost.swift in Sources */,
+				CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */,
 				7C2720B1255C524F00ABBFE0 /* ViewController.swift in Sources */,
 				CE88914A258BBB78005C07A7 /* ImageCollectionViewCell.swift in Sources */,
+				CE88914E258CD35A005C07A7 /* ActiveEventViewController.swift in Sources */,
 				7C2720AD255C524F00ABBFE0 /* AppDelegate.swift in Sources */,
+				CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */,
 				7CFE62722562BF8000547EE4 /* RegisterViewController.swift in Sources */,
 				7C9560252575603400C6ED89 /* MyEventTableViewCell.swift in Sources */,
+				CEEDFFDA2590DDBA00D5ADE5 /* DLGraphScene.m in Sources */,
 				7C95602125755F4800C6ED89 /* MyEventsViewController.swift in Sources */,
 				7C2720D1255D34C200ABBFE0 /* EventAlert.swift in Sources */,
 				7C2720C9255C605000ABBFE0 /* Event.swift in Sources */,
@@ -511,6 +545,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = jordimateos.SafeGroup;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SafeGroup/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
