@@ -53,37 +53,38 @@
                     <connections>
                         <outlet property="tableView" destination="JH2-mU-ZiD" id="dkk-zE-goi"/>
                         <segue destination="h6o-ly-jBh" kind="showDetail" identifier="goToEventDetails" id="gfy-NV-Pea"/>
+                        <segue destination="BC8-Lx-AxO" kind="show" identifier="activeEventSegue" id="enB-Ur-dhL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G6i-Ya-7lS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="164" y="437"/>
         </scene>
-        <!--View Controller-->
+        <!--Active Event View Controller-->
         <scene sceneID="nZf-lW-Br3">
             <objects>
-                <viewController id="BC8-Lx-AxO" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BC8-Lx-AxO" customClass="ActiveEventViewController" customModule="SafeGroup" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kcy-Lj-4t4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bCg-5p-aZq">
-                                <rect key="frame" x="16" y="24" width="343" height="32"/>
+                                <rect key="frame" x="16" y="68" width="343" height="32"/>
                                 <segments>
                                     <segment title="Evento"/>
                                     <segment title="Muro"/>
                                     <segment title="Alertas"/>
                                 </segments>
                             </segmentedControl>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apv-00-ZmR">
-                                <rect key="frame" x="16" y="79" width="343" height="254"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apv-00-ZmR" customClass="ForceGraphView" customModule="SafeGroup" customModuleProvider="target">
+                                <rect key="frame" x="16" y="123" width="343" height="254"/>
                                 <color key="backgroundColor" red="0.92167609930000005" green="0.91375106569999998" blue="0.91352325680000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="254" id="e5x-mQ-ELh"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="eMc-AZ-LpU">
-                                <rect key="frame" x="16" y="357" width="343" height="32"/>
+                                <rect key="frame" x="16" y="401" width="343" height="32"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participantes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggO-ZX-LU8">
                                         <rect key="frame" x="0.0" y="1.5" width="140" height="29"/>
@@ -104,11 +105,11 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l9Q-eu-ZCO">
-                                <rect key="frame" x="16" y="401" width="343" height="242"/>
+                                <rect key="frame" x="16" y="445" width="343" height="198"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epr-nK-2vK">
-                                <rect key="frame" x="313" y="84" width="32" height="32"/>
+                                <rect key="frame" x="313" y="128" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="TRM-qR-giH"/>
                                     <constraint firstAttribute="height" constant="32" id="sP9-vf-5lm"/>
@@ -117,6 +118,9 @@
                                 <state key="normal" image="exclamationmark.triangle.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                 </state>
+                                <connections>
+                                    <action selector="alertsButtonDidPressed:" destination="BC8-Lx-AxO" eventType="touchUpInside" id="dPW-NL-EZ5"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -139,6 +143,17 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pa5-24-Jp3"/>
                     </view>
+                    <navigationItem key="navigationItem" id="mBH-iL-bLR">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="uwO-Ch-RUF">
+                            <connections>
+                                <action selector="doneButtonPressed:" destination="BC8-Lx-AxO" id="gFG-gJ-zX6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="forceGraphView" destination="apv-00-ZmR" id="clv-uO-bYn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pyi-Rw-FJp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

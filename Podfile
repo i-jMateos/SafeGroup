@@ -14,7 +14,10 @@ target 'SafeGroup' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
   pod 'Kingfisher'
-
+  pod 'p2pkit'
+  pod 'ForceDirectedScene'
+  pod 'DLForcedGraphView', '~> 0.1'
+  
   # Optionally, include the Swift extensions if you're using Swift.
   pod 'FirebaseFirestoreSwift'
 

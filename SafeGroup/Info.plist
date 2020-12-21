@@ -20,6 +20,25 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Permite a la app seleccionar imagenes de tu libreria para los eventos.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Para que puedas descubrir y ser descubierto por otros dispositivos cercanos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Permite a la app utilizar la camara para tomar fotos para los eventos.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Permite a la app conocer tu ubicacion</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Permite a la app conocer tu ubicacion</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Necesitamos conocer tu ubicacion para mostrate eventos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Permite a la app conocer tu ubicacion</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -32,18 +51,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSLocationUsageDescription</key>
-	<string>Necesitamos conocer tu ubicacion para mostrate eventos</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Permite a la app conocer tu ubicacion</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Permite a la app conocer tu ubicacion</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Permite a la app conocer tu ubicacion</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Permite a la app utilizar la camara para tomar fotos para los eventos.</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Permite a la app seleccionar imagenes de tu libreria para los eventos.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

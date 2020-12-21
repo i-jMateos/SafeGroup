@@ -203,15 +203,16 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.section {
         case 0:
             event = self.currentEvent
+            self.performSegue(withIdentifier: "activeEventSegue", sender: event)
         case 1:
             event = self.futureEvents?[indexPath.row]
+            self.performSegue(withIdentifier: "goToEventDetails", sender: event)
         case 2:
             event = self.pastEvents?[indexPath.row]
+            self.performSegue(withIdentifier: "goToEventDetails", sender: event)
         default:
             break
         }
-        
-        self.performSegue(withIdentifier: "goToEventDetails", sender: event)
     }
 }
 

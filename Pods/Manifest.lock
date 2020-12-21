@@ -279,6 +279,7 @@ PODS:
   - FirebaseStorage (3.9.1):
     - FirebaseCore (~> 6.10)
     - GTMSessionFetcher/Core (~> 1.1)
+  - ForceDirectedScene (1.0.1)
   - GoogleAppMeasurement (6.9.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
     - GoogleUtilities/MethodSwizzler (~> 6.7)
@@ -340,6 +341,7 @@ PODS:
     - nanopb/encode (= 1.30906.0)
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
+  - p2pkit (2.1.0)
   - PromisesObjC (1.2.11)
 
 DEPENDENCIES:
@@ -349,7 +351,9 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - FirebaseFirestoreSwift
+  - ForceDirectedScene
   - Kingfisher
+  - p2pkit
 
 SPEC REPOS:
   trunk:
@@ -364,6 +368,7 @@ SPEC REPOS:
     - FirebaseFirestoreSwift
     - FirebaseInstallations
     - FirebaseStorage
+    - ForceDirectedScene
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -373,6 +378,7 @@ SPEC REPOS:
     - Kingfisher
     - leveldb-library
     - nanopb
+    - p2pkit
     - PromisesObjC
 
 SPEC CHECKSUMS:
@@ -387,6 +393,7 @@ SPEC CHECKSUMS:
   FirebaseFirestoreSwift: 2c46dbc1156db97dc4f6dd798d4f5b57b9c7fab6
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
   FirebaseStorage: 15e0f15ef3c7fec3d1899d68623e47d4447066b4
+  ForceDirectedScene: a6f14f2d756415847ebc21450f866ef0c147314e
   GoogleAppMeasurement: a6a3a066369828db64eda428cb2856dc1cdc7c4e
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -396,8 +403,9 @@ SPEC CHECKSUMS:
   Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
+  p2pkit: 3c42f139e7d523fc870d791ba963dab69f79688a
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
 
-PODFILE CHECKSUM: 7d892dbf0f590998baa643dbced29d20351cf943
+PODFILE CHECKSUM: 6d68e49c8db498c9b4b7a0f7112839c2bf069380
 
 COCOAPODS: 1.8.4
