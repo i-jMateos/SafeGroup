@@ -1,0 +1,6 @@
+framework module ForceDirectedScene {
+  umbrella header "ForceDirectedScene-umbrella.h"
+
+  export *
+  module * { export * }
+}
