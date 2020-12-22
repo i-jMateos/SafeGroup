@@ -8,14 +8,7 @@
 
 import Foundation
 
-class Role {
-    internal init(id: Int, name: String, description: String) {
-        self.id = id
-        self.name = name
-        self.description = description
-    }
-    
-    var id: Int
-    var name: String
-    var description: String
+enum Role: Codable {
+    case guia
+    case participante
 }

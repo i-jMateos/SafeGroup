@@ -29,6 +29,7 @@ class LoginViewController: UIViewController {
             if let error = error {
                 print(error)
             } else {
+                // Buscar en Firebase el usuario con ID igual al que esta en authResult
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 let window = appDelegate.window
                 let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
