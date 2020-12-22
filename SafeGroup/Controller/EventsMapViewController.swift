@@ -67,7 +67,9 @@ class EventsMapViewController: UIViewController {
                     guard let event: Event = try? JSONDecoder().decode(Event.self, from: jsonData!) else { return }
                     self.events?.append(event)
                     
-                    self.createEventAnnotation(event)
+                    DispatchQueue.main.async {
+                        self.createEventAnnotation(event)
+                    }
                 }
             }
         }

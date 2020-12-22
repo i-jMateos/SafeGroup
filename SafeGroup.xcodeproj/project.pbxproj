@@ -38,6 +38,11 @@
 		CE889148258A11A9005C07A7 /* ParticipantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */; };
 		CE88914A258BBB78005C07A7 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */; };
 		CE88914E258CD35A005C07A7 /* ActiveEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */; };
+		CE9CAE4625923A8400135336 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4525923A8400135336 /* CoreBluetooth.framework */; };
+		CE9CAE4825923A8D00135336 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4725923A8D00135336 /* libicucore.tbd */; };
+		CE9CAE4B25923A9400135336 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4A25923A9400135336 /* CFNetwork.framework */; };
+		CE9CAE4E25923A9A00135336 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4D25923A9A00135336 /* Security.framework */; };
+		CE9CAE5125923AA100135336 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE5025923AA100135336 /* Foundation.framework */; };
 		CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */; };
 		CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */; };
 		CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */; };
@@ -81,6 +86,11 @@
 		CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParticipantTableViewCell.xib; sourceTree = "<group>"; };
 		CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveEventViewController.swift; sourceTree = "<group>"; };
+		CE9CAE4525923A8400135336 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		CE9CAE4725923A8D00135336 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		CE9CAE4A25923A9400135336 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		CE9CAE4D25923A9A00135336 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CE9CAE5025923AA100135336 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CEEDFFC9258CD75600D5ADE5 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNode.swift; sourceTree = "<group>"; };
 		CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGraphView.swift; sourceTree = "<group>"; };
@@ -98,6 +108,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9CAE5125923AA100135336 /* Foundation.framework in Frameworks */,
+				CE9CAE4E25923A9A00135336 /* Security.framework in Frameworks */,
+				CE9CAE4B25923A9400135336 /* CFNetwork.framework in Frameworks */,
+				CE9CAE4825923A8D00135336 /* libicucore.tbd in Frameworks */,
+				CE9CAE4625923A8400135336 /* CoreBluetooth.framework in Frameworks */,
 				8161CEB268C27AE132CEB897 /* Pods_SafeGroup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,6 +236,11 @@
 		9EFE626F2C86A2D794AD9D7F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE9CAE5025923AA100135336 /* Foundation.framework */,
+				CE9CAE4D25923A9A00135336 /* Security.framework */,
+				CE9CAE4A25923A9400135336 /* CFNetwork.framework */,
+				CE9CAE4725923A8D00135336 /* libicucore.tbd */,
+				CE9CAE4525923A8400135336 /* CoreBluetooth.framework */,
 				5A2FCCCD8B19B03E6EA13FBB /* Pods_SafeGroup.framework */,
 			);
 			name = Frameworks;
@@ -466,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -520,7 +540,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -561,7 +581,7 @@
 				DEVELOPMENT_TEAM = JBF767YW9T;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SafeGroup/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

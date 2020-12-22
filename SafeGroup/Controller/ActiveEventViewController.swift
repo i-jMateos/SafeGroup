@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import ForceDirectedScene
+import CoreBluetooth
 
 class ActiveEventViewController: UIViewController {
 
@@ -27,15 +28,12 @@ class ActiveEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
-        PPKController.enableProximityRanging()
-    
         forcedGraph = DLForcedGraphView(frame: forceGraphView.bounds)
         forceGraphView.addSubview(forcedGraph)
-        
+
         graphScene = self.forcedGraph.graphScene
         graphScene.delegate = self
-        
+
         let edge = DLMakeEdge(0, 0)
         edge?.repulsion = 1100.0
         edge?.attraction = 0.07
@@ -45,7 +43,19 @@ class ActiveEventViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        PPKController.startDiscovery(withDiscoveryInfo: "Hello".data(using: .utf8), stateRestoration: false)
+        if #available(iOS 13.0, *) {
+            if (CBCentralManager().authorization != .allowedAlways) {   //System will automatically ask user to turn on iOS system Bluetooth if this returns false
+                print("Bluetooth enabled")
+            }
+        } else {
+            let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String
+            
+        }
+        
+        DispatchQueue.main.async {
+            PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
+            PPKController.enableProximityRanging()
+        }
     }
     
     func addNodeForPeer(peer: PPKPeer) {
@@ -133,6 +143,31 @@ class ActiveEventViewController: UIViewController {
         ownNode.skNode.strokeColor = hasImmediatePeers ? highlightColor : ownNode.skNode.fillColor
     }
     
+    func removeNode(for peer: PPKPeer?) {
+        if !checkPeerExists(peer) {
+            return
+        }
+
+        guard let index = nearbyPeers.keys.first else { return }
+        guard let peerIndex = nearbyPeers.index(forKey: index) else { return }
+        graphScene.remove(DLMakeEdge(0, index))
+        peerNodes.removeValue(forKey: index)
+        nearbyPeers.remove(at: peerIndex)
+
+        updateStrokesForAllNodes()
+    }
+
+    func removeNodesForAllPeers() {
+        nearbyPeers.forEach { (index, peer) in
+            self.graphScene.remove(DLMakeEdge(0, index))
+        }
+
+        peerNodes.removeAll()
+        nearbyPeers.removeAll()
+
+        updateStrokesForAllNodes()
+    }
+    
     func updateProximityStrength(for peer: PPKPeer) {
         if !checkPeerExists(peer) {
             return
@@ -207,9 +242,15 @@ class ActiveEventViewController: UIViewController {
         addNodeForPeer(peer: peer)
     }
     
+    @IBAction func addParticipantButtonPressed(_ sender: Any) {
+        PPKController.startDiscovery(withDiscoveryInfo: "Hello".data(using: .utf8), stateRestoration: false)
+        
+    }
+    
     @IBAction func doneButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
     /*
     // MARK: - Navigation
 
@@ -239,6 +280,8 @@ extension ActiveEventViewController: PPKControllerDelegate {
     
     func peerLost(_ peer: PPKPeer) {
         print("\(peer.peerID) is no longer here")
+        
+        removeNode(for: peer)
     }
     
     func proximityStrengthChanged(for peer: PPKPeer) {
@@ -252,25 +295,25 @@ extension ActiveEventViewController: PPKControllerDelegate {
     }
 }
 
-extension ActiveEventViewController: SKSceneDelegate {
-    func update(_ currentTime: TimeInterval, for scene: SKScene) {
-//        fdGraph.update()
-    }
-    
-    func didApplyConstraints(for scene: SKScene) {
-//        var path: UIBezierPath
-//        for link in links {
-//            guard let src = link.sourceSKNode else { return }
-//            guard let dest = link.destinationSKNode else { return }
-//            let lineNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 10, height: 10), cornerRadius: 0)
-//            path = UIBezierPath()
-//            path.move(to: src.position)
-//            path.addLine(to: dest.position)
+//extension ActiveEventViewController: SKSceneDelegate {
+//    func update(_ currentTime: TimeInterval, for scene: SKScene) {
+////        fdGraph.update()
+//    }
 //
-//            lineNode.path = path.cgPath
-//        }
-    }
-}
+//    func didApplyConstraints(for scene: SKScene) {
+////        var path: UIBezierPath
+////        for link in links {
+////            guard let src = link.sourceSKNode else { return }
+////            guard let dest = link.destinationSKNode else { return }
+////            let lineNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 10, height: 10), cornerRadius: 0)
+////            path = UIBezierPath()
+////            path.move(to: src.position)
+////            path.addLine(to: dest.position)
+////
+////            lineNode.path = path.cgPath
+////        }
+//    }
+//}
 
 extension ActiveEventViewController: DLGraphSceneDelegate {
     func tap(onVertex vertex: SKNode!, at index: UInt) {

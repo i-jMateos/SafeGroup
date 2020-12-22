@@ -205,12 +205,12 @@ class CreateEventViewController: UIViewController {
         }
         
         /// No permitir fecha de fin anterior a la de inicio.
-        if let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
-            let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") {
-            if endDate < startDate {
-                self.endDateTextField.text = dateFormatter.string(from: startDate)
-            }
-        }
+//        if let startDate = dateFormatter.date(from: self.startDateTextField.text ?? ""),
+//            let endDate = dateFormatter.date(from: self.endDateTextField.text ?? "") {
+//            if endDate < startDate {
+//                self.endDateTextField.text = dateFormatter.string(from: startDate)
+//            }
+//        }
     }
     
     @IBAction func doneButtonPressed(_ sender: Any) {
