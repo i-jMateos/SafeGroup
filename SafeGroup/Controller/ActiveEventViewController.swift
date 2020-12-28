@@ -10,6 +10,8 @@ import UIKit
 import SpriteKit
 import ForceDirectedScene
 import CoreBluetooth
+import CoreLocation
+import Firebase
 
 class ActiveEventViewController: UIViewController {
 
@@ -25,6 +27,10 @@ class ActiveEventViewController: UIViewController {
     var peerNodes = [UInt: SKShapeNode]()
     var nextNodeIndex: Int = 0
     
+    var event: Event!
+    
+    let db = Firestore.firestore()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,6 +44,11 @@ class ActiveEventViewController: UIViewController {
         edge?.repulsion = 1100.0
         edge?.attraction = 0.07
         graphScene.add(edge)
+        
+        DispatchQueue.main.async {
+            PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
+            PPKController.enableProximityRanging()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,11 +61,6 @@ class ActiveEventViewController: UIViewController {
         } else {
             let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String
             
-        }
-        
-        DispatchQueue.main.async {
-            PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
-            PPKController.enableProximityRanging()
         }
     }
     
@@ -237,9 +243,50 @@ class ActiveEventViewController: UIViewController {
         }
     }
     
+    func createEventAlert(alert: EventAlert) {
+        guard let alertDict = alert.dictionary else { return }
+        
+        db.collection("alerts").addDocument(data: alertDict) { (error) in
+            if let error = error {
+                print("Error adding document: \(error)")
+            } else {
+                print("Success adding alert")
+            }
+        }
+    }
+    
     @IBAction func alertsButtonDidPressed(_ sender: Any) {
-        let peer = PPKPeer()
-        addNodeForPeer(peer: peer)
+//        let peer = PPKPeer()
+//        addNodeForPeer(peer: peer)
+        guard let currentUser = User.currentUser else { return }
+        
+        let alertController = UIAlertController(title: "Enviar alerta", message: "Envia una alerta a tu guia si necesitas ayuda", preferredStyle: .actionSheet)
+        
+        let lostAlertAction = UIAlertAction(title: EventAlertType.lost.title, style: .default) { (action) in
+            
+            let latitude = CLLocationManager().location?.coordinate.latitude ?? 0
+            let longitude = CLLocationManager().location?.coordinate.longitude ?? 0
+            let location = Location(latitude: latitude, longitude: longitude)
+            let alert = EventAlert.create(.lost, lastUserLocalation: location, lastUserDistanceMeters: nil, event: self.event, user: currentUser)
+            
+            self.createEventAlert(alert: alert)
+        }
+        
+        let breakAlertAction = UIAlertAction(title: EventAlertType.needABreak.title, style: .default) { (action) in
+            let alert = EventAlert.create(.needABreak, event: self.event, user: currentUser)
+            
+            self.createEventAlert(alert: alert)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel) { (_) in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(lostAlertAction)
+        alertController.addAction(breakAlertAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func addParticipantButtonPressed(_ sender: Any) {
@@ -400,4 +447,8 @@ extension ActiveEventViewController {
         
         return attraction
     }
+}
+
+extension ActiveEventViewController: UIAlertViewDelegate {
+    
 }

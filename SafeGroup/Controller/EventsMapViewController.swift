@@ -109,7 +109,9 @@ class EventsMapViewController: UIViewController {
 
             if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
                 CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways) {
-                currentLocation = locManager.location!
+                if let location = locManager.location {
+                    currentLocation = location
+                }
             }
 
             print("currentLongitude: \(currentLocation.coordinate.longitude)")

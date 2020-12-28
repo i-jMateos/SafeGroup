@@ -35,7 +35,7 @@
 		7CF3D09625642B720070D8AC /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF3D09525642B720070D8AC /* CreateEventViewController.swift */; };
 		7CF3D0B02566DED10070D8AC /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF3D0AF2566DED10070D8AC /* Encodable+.swift */; };
 		7CFE62722562BF8000547EE4 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE62712562BF8000547EE4 /* RegisterViewController.swift */; };
-		8161CEB268C27AE132CEB897 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		8161CEB268C27AE132CEB897 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		CE889147258A11A9005C07A7 /* ParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE889145258A11A9005C07A7 /* ParticipantTableViewCell.swift */; };
 		CE889148258A11A9005C07A7 /* ParticipantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE889146258A11A9005C07A7 /* ParticipantTableViewCell.xib */; };
 		CE88914A258BBB78005C07A7 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE889149258BBB78005C07A7 /* ImageCollectionViewCell.swift */; };
@@ -45,6 +45,11 @@
 		CE9CAE4B25923A9400135336 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4A25923A9400135336 /* CFNetwork.framework */; };
 		CE9CAE4E25923A9A00135336 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE4D25923A9A00135336 /* Security.framework */; };
 		CE9CAE5125923AA100135336 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CAE5025923AA100135336 /* Foundation.framework */; };
+		CE9CAED2259A03D200135336 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAED1259A03D200135336 /* SegmentedViewController.swift */; };
+		CE9CAED5259A0AED00135336 /* WallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAED4259A0AED00135336 /* WallViewController.swift */; };
+		CE9CAED8259A137D00135336 /* WallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAED7259A137D00135336 /* WallTableViewCell.swift */; };
+		CE9CAEDB259A2C1900135336 /* EventAlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAEDA259A2C1900135336 /* EventAlertsViewController.swift */; };
+		CE9CAEDE259A2CBE00135336 /* EventAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAEDD259A2CBE00135336 /* EventAlertTableViewCell.swift */; };
 		CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */; };
 		CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */; };
 		CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */; };
@@ -93,6 +98,11 @@
 		CE9CAE4A25923A9400135336 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		CE9CAE4D25923A9A00135336 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CE9CAE5025923AA100135336 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CE9CAED1259A03D200135336 /* SegmentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
+		CE9CAED4259A0AED00135336 /* WallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallViewController.swift; sourceTree = "<group>"; };
+		CE9CAED7259A137D00135336 /* WallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallTableViewCell.swift; sourceTree = "<group>"; };
+		CE9CAEDA259A2C1900135336 /* EventAlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAlertsViewController.swift; sourceTree = "<group>"; };
+		CE9CAEDD259A2CBE00135336 /* EventAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAlertTableViewCell.swift; sourceTree = "<group>"; };
 		CEEDFFC9258CD75600D5ADE5 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNode.swift; sourceTree = "<group>"; };
 		CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGraphView.swift; sourceTree = "<group>"; };
@@ -116,7 +126,7 @@
 				CE9CAE4B25923A9400135336 /* CFNetwork.framework in Frameworks */,
 				CE9CAE4825923A8D00135336 /* libicucore.tbd in Frameworks */,
 				CE9CAE4625923A8400135336 /* CoreBluetooth.framework in Frameworks */,
-				8161CEB268C27AE132CEB897 /* BuildFile in Frameworks */,
+				8161CEB268C27AE132CEB897 /* (null) in Frameworks */,
 				5AD23D15B0992D9E40BD1727 /* Pods_SafeGroup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +189,11 @@
 				7CB5C1582562EA0800E150B9 /* EventsMapViewController.swift */,
 				7C955FCA256C277900C6ED89 /* EventDetailsViewController.swift */,
 				CE88914D258CD35A005C07A7 /* ActiveEventViewController.swift */,
+				CE9CAED1259A03D200135336 /* SegmentedViewController.swift */,
+				CE9CAED4259A0AED00135336 /* WallViewController.swift */,
+				CE9CAED7259A137D00135336 /* WallTableViewCell.swift */,
+				CE9CAEDA259A2C1900135336 /* EventAlertsViewController.swift */,
+				CE9CAEDD259A2CBE00135336 /* EventAlertTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -393,8 +408,11 @@
 				7C8142B1255EEA9E00E83E8E /* UserProfileViewController.swift in Sources */,
 				7C2720D7255D40D900ABBFE0 /* Role.swift in Sources */,
 				7CF3D0B02566DED10070D8AC /* Encodable+.swift in Sources */,
+				CE9CAED8259A137D00135336 /* WallTableViewCell.swift in Sources */,
 				7C8142AD255DA86D00E83E8E /* UIViewController+.swift in Sources */,
+				CE9CAEDE259A2CBE00135336 /* EventAlertTableViewCell.swift in Sources */,
 				7C2720C4255C5CC600ABBFE0 /* User.swift in Sources */,
+				CE9CAEDB259A2C1900135336 /* EventAlertsViewController.swift in Sources */,
 				CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */,
 				7C2720D5255D405700ABBFE0 /* Location.swift in Sources */,
 				7C95603F2576AFC400C6ED89 /* Date+.swift in Sources */,
@@ -404,6 +422,7 @@
 				CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */,
 				7C2720B1255C524F00ABBFE0 /* ViewController.swift in Sources */,
 				CE88914A258BBB78005C07A7 /* ImageCollectionViewCell.swift in Sources */,
+				CE9CAED5259A0AED00135336 /* WallViewController.swift in Sources */,
 				CE88914E258CD35A005C07A7 /* ActiveEventViewController.swift in Sources */,
 				7C2720AD255C524F00ABBFE0 /* AppDelegate.swift in Sources */,
 				CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */,
@@ -415,6 +434,7 @@
 				7C2720C9255C605000ABBFE0 /* Event.swift in Sources */,
 				7C67D8F3258CB66F0098CB44 /* Register.swift in Sources */,
 				7CF3D09625642B720070D8AC /* CreateEventViewController.swift in Sources */,
+				CE9CAED2259A03D200135336 /* SegmentedViewController.swift in Sources */,
 				7C955FCB256C277900C6ED89 /* EventDetailsViewController.swift in Sources */,
 				CE889147258A11A9005C07A7 /* ParticipantTableViewCell.swift in Sources */,
 			);

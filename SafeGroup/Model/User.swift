@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class User: Codable {
     internal init(id: String, email: String, firtname: String? = nil, lastname: String? = nil, role: Role = .participante) {
@@ -45,5 +46,13 @@ class User: Codable {
         try container.encode(firstname, forKey: .firstname)
         try container.encode(lastname, forKey: .lastname)
         try container.encode(role, forKey: .role)
+    }
+}
+
+extension User {
+    static var currentUser: User? {
+        guard let firUser = Auth.auth().currentUser else { return nil }
+        
+        return User(id: firUser.uid, email: firUser.email!)
     }
 }

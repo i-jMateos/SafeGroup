@@ -52,6 +52,10 @@ class MyEventsViewController: UIViewController {
         self.futureEvents = []
         self.pastEvents = []
         
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        
         guard let currentUser = Auth.auth().currentUser else { return }
         
         /// Recuperar eventos en los que el usuario esta inscrito.
@@ -132,11 +136,19 @@ class MyEventsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let event = sender as? Event else { return }
         
-        let destination = segue.destination as? EventDetailsViewController
-        destination?.delegate = self
-        destination?.event = event
+        switch segue.identifier {
+        case "activeEventSegue":
+            let nav = segue.destination as! UINavigationController
+            let destination = nav.topViewController as! SegmentedViewController
+            destination.event = event
+        case "goToEventDetails":
+            let destination = segue.destination as? EventDetailsViewController
+            destination?.delegate = self
+            destination?.event = event
+        default:
+            break
+        }
     }
-
 }
 
 extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {

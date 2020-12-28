@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Kingfisher
+import MapKit
 
 protocol EventDetailsDelegate {
     func eventDetails(didDeleteEvent event: Event)
@@ -24,6 +25,7 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var participantsTableView: UITableView!
     @IBOutlet weak var participantsTableHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var navigateToEventButton: UIButton!
     
     var delegate: EventDetailsDelegate?
     
@@ -86,6 +88,22 @@ class EventDetailsViewController: UIViewController {
         }
     }
     
+    func openMapForPlace(event: Event) {
+        let latitude = event.localitation.latitude
+        let longitude = event.localitation.longitude
+        let regionDistance: CLLocationDistance = 10000
+        let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
+        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = event.name
+        mapItem.openInMaps(launchOptions: options)
+    }
+    
     @IBAction func actionButtonDidPress(_ sender: Any) {
         guard let user = Auth.auth().currentUser else { return }
         
@@ -141,6 +159,10 @@ class EventDetailsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func navigateToEventButtonAction(_ sender: Any) {
+        openMapForPlace(event: event)
     }
     
     @IBAction func closeButtonDidPress(_ sender: Any) {
