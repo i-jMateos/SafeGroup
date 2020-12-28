@@ -8,43 +8,79 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
 
 class RegisterViewController: UIViewController {
 
+    @IBOutlet weak var infoLabel: UILabel!
+    
+    @IBOutlet weak var roleSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var createCountTextField: UILabel!
+    @IBOutlet weak var lastnameTextField: UITextField!
+    @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
+    
+    let db = Firestore.firestore()
+    var usersReference: DocumentReference? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        usersReference = db.collection("users").document()
         
         self.hideKeyboardWhenTappedAround()
     }
     
-    func register(email: String, password: String) {
+    func register(email: String, password: String, firstName: String, lastName: String, role: Role) {
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
             if let error = error {
                 print(error)
             } else {
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let window = appDelegate.window
-                let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-                window?.rootViewController = mainController
-                window?.makeKeyAndVisible()
+                guard let id = authResult?.user.uid else { return }
+                
+                let user = User(id: id, email: email, firtname: firstName, lastname: lastName, role: role)
+                guard let userEncoded = user.dictionary else { return }
+                
+                self.usersReference?.setData(userEncoded, completion: { (err) in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        print("Document added with ID: \(self.usersReference!.documentID)")
+                        
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        let window = appDelegate.window
+                        let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                        window?.rootViewController = mainController
+                        window?.makeKeyAndVisible()
+                    }
+                })
             }
         }
     }
 
     
     @IBAction func registerButton(_ sender: Any) {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let firstName = self.firstnameTextField.text else { return }
+        guard let lastName = self.lastnameTextField.text else { return }
         
-        let email = emailTextField.text ?? ""
-        let password = passwordTextField.text ?? ""
+        var role: Role!
+        let index = roleSegmentedControl.selectedSegmentIndex
+        if index == 0 {
+            role = .guia
+        } else {
+            role = .participante
+        }
         
-        register(email: email, password: password)
+        register(email: email, password: password, firstName: firstName, lastName: lastName, role: role)
     }
     
+    @IBAction func doneButtonAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 
     /*
