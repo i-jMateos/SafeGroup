@@ -49,6 +49,9 @@ class RegisterViewController: UIViewController {
                     } else {
                         print("Document added with ID: \(self.usersReference!.documentID)")
                         
+                        // Almacenar usuario actual de UserDefaults para luego.
+                        User.setCurrent(user, writeToUserDefaults: true)
+                        
                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
                         let window = appDelegate.window
                         let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()

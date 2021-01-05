@@ -18,7 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        if let _ =  Auth.auth().currentUser {
+        if let _ = Auth.auth().currentUser {
+            if let userData = UserDefaults.standard.object(forKey: Constants.UserDefaults.currentUser) as? Data, let user = try? JSONDecoder().decode(User.self, from: userData) {
+                User.setCurrent(user)
+            }
+            
             let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
             window?.rootViewController = mainController
             window?.makeKeyAndVisible()

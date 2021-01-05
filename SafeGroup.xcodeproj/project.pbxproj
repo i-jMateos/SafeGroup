@@ -50,6 +50,7 @@
 		CE9CAED8259A137D00135336 /* WallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAED7259A137D00135336 /* WallTableViewCell.swift */; };
 		CE9CAEDB259A2C1900135336 /* EventAlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAEDA259A2C1900135336 /* EventAlertsViewController.swift */; };
 		CE9CAEDE259A2CBE00135336 /* EventAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAEDD259A2CBE00135336 /* EventAlertTableViewCell.swift */; };
+		CE9CAEE425A4AA2600135336 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CAEE325A4AA2600135336 /* Constants.swift */; };
 		CEEDFFCB258CDBC700D5ADE5 /* MyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */; };
 		CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */; };
 		CEEDFFD82590DDBA00D5ADE5 /* DLForcedGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDFFD52590DDB700D5ADE5 /* DLForcedGraphView.m */; };
@@ -103,6 +104,7 @@
 		CE9CAED7259A137D00135336 /* WallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallTableViewCell.swift; sourceTree = "<group>"; };
 		CE9CAEDA259A2C1900135336 /* EventAlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAlertsViewController.swift; sourceTree = "<group>"; };
 		CE9CAEDD259A2CBE00135336 /* EventAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAlertTableViewCell.swift; sourceTree = "<group>"; };
+		CE9CAEE325A4AA2600135336 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CEEDFFC9258CD75600D5ADE5 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CEEDFFCA258CDBC700D5ADE5 /* MyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNode.swift; sourceTree = "<group>"; };
 		CEEDFFCC258CDE2100D5ADE5 /* ForceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGraphView.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				7C8142AC255DA86D00E83E8E /* UIViewController+.swift */,
 				7CF3D0AF2566DED10070D8AC /* Encodable+.swift */,
 				7C95603E2576AFC400C6ED89 /* Date+.swift */,
+				CE9CAEE325A4AA2600135336 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				CEEDFFCD258CDE2100D5ADE5 /* ForceGraphView.swift in Sources */,
 				7CFE62722562BF8000547EE4 /* RegisterViewController.swift in Sources */,
 				7C9560252575603400C6ED89 /* MyEventTableViewCell.swift in Sources */,
+				CE9CAEE425A4AA2600135336 /* Constants.swift in Sources */,
 				CEEDFFDA2590DDBA00D5ADE5 /* DLGraphScene.m in Sources */,
 				7C95602125755F4800C6ED89 /* MyEventsViewController.swift in Sources */,
 				7C2720D1255D34C200ABBFE0 /* EventAlert.swift in Sources */,

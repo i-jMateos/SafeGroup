@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseAuth
+import Firebase
 
 class LoginViewController: UIViewController {
 
@@ -30,11 +30,28 @@ class LoginViewController: UIViewController {
                 print(error)
             } else {
                 // Buscar en Firebase el usuario con ID igual al que esta en authResult
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let window = appDelegate.window
-                let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-                window?.rootViewController = mainController
-                window?.makeKeyAndVisible()
+                let userReference = Firestore.firestore().collection("users").whereField("id", isEqualTo: authResult?.user.uid ?? "")
+                
+                userReference.getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error trying to fetch user profile. \(error.localizedDescription)")
+                    } else if querySnapshot!.documents.count != 1 {
+                        print("More than one document or none")
+                    } else {
+                        guard let dict = querySnapshot?.documents.first?.data() else { return }
+                        guard let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []) else { return }
+                        
+                        guard let user: User = try? JSONDecoder().decode(User.self, from: jsonData) else { return }
+                        
+                        User.setCurrent(user, writeToUserDefaults: true)
+                        
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        let window = appDelegate.window
+                        let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                        window?.rootViewController = mainController
+                        window?.makeKeyAndVisible()
+                    }
+                }
             }
         }
     }

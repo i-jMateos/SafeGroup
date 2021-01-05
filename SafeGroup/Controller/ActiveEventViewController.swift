@@ -16,6 +16,11 @@ import Firebase
 class ActiveEventViewController: UIViewController {
 
     @IBOutlet weak var forceGraphView: SKView!
+    @IBOutlet weak var connectView: UIView!
+    @IBOutlet weak var participantsTableView: UITableView!
+    @IBOutlet weak var discoveryPeerLabel: UILabel!
+    @IBOutlet weak var discoveryPeerButton: UIButton!
+    @IBOutlet weak var participantsTableViewHeightConstraint: NSLayoutConstraint!
     
     var forcedGraph: DLForcedGraphView!
     var graphScene: DLGraphScene!
@@ -23,7 +28,7 @@ class ActiveEventViewController: UIViewController {
     var ownNode: MyNode!
     var nodes: [MyNode] = []
     var links: [MyLink] = []
-    var nearbyPeers = [UInt: PPKPeer]()
+    var nearbyPeers = [UInt: (user: User, peer: PPKPeer)]()
     var peerNodes = [UInt: SKShapeNode]()
     var nextNodeIndex: Int = 0
     
@@ -34,7 +39,12 @@ class ActiveEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        forceGraphView.layer.cornerRadius = forceGraphView.bounds.height/2
+        forceGraphView.clipsToBounds = true
+        
         forcedGraph = DLForcedGraphView(frame: forceGraphView.bounds)
+        forcedGraph.layer.cornerRadius = forcedGraph.bounds.height/2
+        forcedGraph.clipsToBounds = true
         forceGraphView.addSubview(forcedGraph)
 
         graphScene = self.forcedGraph.graphScene
@@ -45,10 +55,17 @@ class ActiveEventViewController: UIViewController {
         edge?.attraction = 0.07
         graphScene.add(edge)
         
-        DispatchQueue.main.async {
+        if !PPKController.isEnabled() {
             PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
             PPKController.enableProximityRanging()
         }
+        
+        self.participantsTableView.delegate = self
+        self.participantsTableView.dataSource = self
+        
+        connectView.layer.cornerRadius = 10
+        connectView.layer.shadowColor = UIColor.blue.cgColor
+        connectView.layer.shadowRadius = 10
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,14 +81,20 @@ class ActiveEventViewController: UIViewController {
         }
     }
     
-    func addNodeForPeer(peer: PPKPeer) {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        participantsTableViewHeightConstraint.constant = participantsTableView.contentSize.height
+    }
+    
+    func addNodeForPeer(peer: PPKPeer, user: User) {
         if checkPeerExists(peer) {
             updateColor(for: peer)
             return
         }
         
         let lastIndex: UInt = UInt(nearbyPeers.count + 1)
-        nearbyPeers[lastIndex] = peer
+        nearbyPeers[lastIndex] = (user: user, peer: peer)
         
         let edge = DLMakeEdge(0, lastIndex)
         edge?.repulsion = self.getRepulsionFor(peer.proximityStrength)
@@ -80,10 +103,24 @@ class ActiveEventViewController: UIViewController {
         edge?.immediateConnection = (peer.proximityStrength == .immediate)
         
         graphScene.add(edge)
+        
+        let message = "conectado".data(using: .utf8)
+        PPKController.sendMessage(message!, toNearbyPeer: peer, withDeliveryStatusBlock: { (statusCode) in
+          if (statusCode == .dispatched) {
+            print("Message sent to peer: \(peer.peerID)")
+          }
+          else {
+            print("Failed to sent the message with error code: \(statusCode)")
+          }
+        })
+        
+        DispatchQueue.main.async {
+            self.participantsTableView.reloadData()
+        }
     }
     
     func checkPeerExists(_ peer: PPKPeer?) -> Bool {
-        if let peer = peer, nearbyPeers.values.contains(peer) {
+        if let peer = peer, nearbyPeers.values.compactMap({ $0.peer }).contains(peer) {
             return true
         }
         
@@ -132,11 +169,11 @@ class ActiveEventViewController: UIViewController {
         let highlightColor = UIColor.white
 
         var hasImmediatePeers = false
-        nearbyPeers.forEach({ (index, peer) in
+        nearbyPeers.forEach({ (index, item) in
             var node: SKShapeNode? = nil
             node = peerNodes[index]
             
-            if peer.proximityStrength == .immediate {
+            if item.peer.proximityStrength == .immediate {
                 node?.strokeColor = highlightColor
                 hasImmediatePeers = true
             } else {
@@ -161,6 +198,9 @@ class ActiveEventViewController: UIViewController {
         nearbyPeers.remove(at: peerIndex)
 
         updateStrokesForAllNodes()
+        DispatchQueue.main.async {
+            self.participantsTableView.reloadData()
+        }
     }
 
     func removeNodesForAllPeers() {
@@ -189,6 +229,9 @@ class ActiveEventViewController: UIViewController {
         graphScene.update(edge)
 
         updateStrokesForAllNodes()
+        DispatchQueue.main.async {
+            self.participantsTableView.reloadData()
+        }
     }
     
     private func createVertexNode() -> SKShapeNode? {
@@ -290,14 +333,28 @@ class ActiveEventViewController: UIViewController {
     }
     
     @IBAction func addParticipantButtonPressed(_ sender: Any) {
-        PPKController.startDiscovery(withDiscoveryInfo: "Hello".data(using: .utf8), stateRestoration: false)
-        
+//        guard let user = User.currentUser else { return }
+//        guard let userData = try? JSONEncoder().encode(user) else { return }
+//        
+//        PPKController.startDiscovery(withDiscoveryInfo: userData, stateRestoration: false)
     }
     
     @IBAction func doneButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func initiatePeerDiscoveryButtonPressed(_ sender: Any) {
+        guard let user = User.currentUser else { return }
+        guard let userData = try? JSONEncoder().encode(user) else { return }
+        
+        PPKController.startDiscovery(withDiscoveryInfo: userData, stateRestoration: false)
+        
+        self.discoveryPeerButton.setTitle("Escuchando...", for: .disabled)
+        self.discoveryPeerButton.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            PPKController.stopDiscovery()
+        }
+    }
     /*
     // MARK: - Navigation
 
@@ -318,10 +375,9 @@ extension ActiveEventViewController: PPKControllerDelegate {
     
     func peerDiscovered(_ peer: PPKPeer) {
         if let discoveryInfo = peer.discoveryInfo {
-            let discoveryInfoString = String(data: discoveryInfo, encoding: .utf8)
-            print("\(peer.peerID) is here with discovery info: \(discoveryInfoString)")
+            guard let user = try? JSONDecoder().decode(User.self, from: discoveryInfo) else { return }
             
-            self.addNodeForPeer(peer: peer)
+            self.addNodeForPeer(peer: peer, user: user)
         }
     }
     
@@ -329,6 +385,13 @@ extension ActiveEventViewController: PPKControllerDelegate {
         print("\(peer.peerID) is no longer here")
         
         removeNode(for: peer)
+        
+        let latitude = CLLocationManager().location?.coordinate.latitude ?? 0
+        let longitude = CLLocationManager().location?.coordinate.longitude ?? 0
+        let location = Location(latitude: latitude, longitude: longitude)
+        let alert = EventAlert.create(.lost, lastUserLocalation: location, lastUserDistanceMeters: nil, event: self.event, user: User.currentUser!)
+        
+        self.createEventAlert(alert: alert)
     }
     
     func proximityStrengthChanged(for peer: PPKPeer) {
@@ -338,6 +401,31 @@ extension ActiveEventViewController: PPKControllerDelegate {
         }
         else {
           print("\(peer.peerID) is not yet in range")
+        }
+    }
+    
+    func discoveryStateChanged(_ state: PPKDiscoveryState) {
+        switch state {
+        case .running:
+            self.discoveryPeerButton.setTitle("Escuchando...", for: .disabled)
+            self.discoveryPeerButton.isEnabled = false
+        case .stopped:
+            self.discoveryPeerButton.setTitle("Iniciar escucha", for: .normal)
+            self.discoveryPeerButton.isEnabled = true
+        default:
+            break
+        }
+    }
+    
+    func messageReceived(_ message: Data, fromNearbyPeer peer: PPKPeer) {
+        if nearbyPeers.values.compactMap({ $0.peer }).contains(peer) {
+            let messageAsString = String(data: message, encoding: .utf8)
+            switch messageAsString {
+            case "conectado":
+                discoveryPeerLabel.text = "Conectado"
+            default:
+                discoveryPeerLabel.text = nil
+            }            
         }
     }
 }
@@ -396,11 +484,18 @@ extension ActiveEventViewController: DLGraphSceneDelegate {
             ownNode = MyNode(skNode: vertex)
             vertex.fillColor = UIColor.red
         } else {
-            let peer = nearbyPeers[index]
+            let item = nearbyPeers[index]
             peerNodes[index] = vertex
             let random = {CGFloat(arc4random_uniform(255)) / 255.0}
             let color = UIColor(red: random(), green: random(), blue: random(), alpha: 1)
             vertex.fillColor = color
+            
+            let label = SKLabelNode()
+            label.fontName = "HelveticaNeue-Thin"
+            label.fontSize = 14
+            label.verticalAlignmentMode = .center
+            label.text = item?.user.initials
+            vertex.addChild(label)
         }
         
         vertex.lineWidth = 2.0
@@ -447,8 +542,41 @@ extension ActiveEventViewController {
         
         return attraction
     }
+    
+    func getProximityStrengthName(_ proximityStrength: PPKProximityStrength) -> String? {
+        switch proximityStrength {
+        case .extremelyWeak:
+            return "Muy lejos"
+        case .weak:
+            return "Lejos"
+        case .medium:
+            return "Buena distancia"
+        case .strong:
+            return "Cerca"
+        case .immediate:
+            return "Muy cerca"
+        default:
+            return nil
+        }
+    }
 }
 
 extension ActiveEventViewController: UIAlertViewDelegate {
     
+}
+
+extension ActiveEventViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return nearbyPeers.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        if let item = nearbyPeers[UInt(indexPath.row+1)], let signalStrengthName = self.getProximityStrengthName(item.peer.proximityStrength) {
+            cell.textLabel?.text = "\(item.user.displayName): \(signalStrengthName)"
+        }
+        
+        return cell
+    }
 }
