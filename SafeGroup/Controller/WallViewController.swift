@@ -44,6 +44,10 @@ class WallViewController: UIViewController {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         getPosts()
     }
@@ -52,7 +56,7 @@ class WallViewController: UIViewController {
         postsReference = db.collection("posts").document()
         
         guard let eventDict = event.dictionary else { return }
-        
+        var posts: [EventPost] = []
         db.collection("posts")
             .whereField("event", isEqualTo: eventDict)
             .getDocuments() { (querySnapshot, err) in
@@ -64,10 +68,11 @@ class WallViewController: UIViewController {
                         let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: [])
                         
                         guard let post: EventPost = try? JSONDecoder().decode(EventPost.self, from: jsonData!) else { return }
-                        self.posts.append(post)
+                        posts.append(post)
                     }
                 }
                 
+                self.posts = posts
                 self.posts.sort(by: { $0.timestamp > $1.timestamp })
                 
                 DispatchQueue.main.async {
