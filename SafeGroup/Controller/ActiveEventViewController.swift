@@ -56,10 +56,9 @@ class ActiveEventViewController: UIViewController {
         graphScene.add(edge)
         
         if !PPKController.isEnabled() {
-            PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
+            PPKController.enable(withConfiguration: "92b897b8be6045b38a867af78a6d6c3e", observer: self)
+            PPKController.enableProximityRanging()
         }
-        
-        PPKController.enableProximityRanging()
         
         self.participantsTableView.delegate = self
         self.participantsTableView.dataSource = self

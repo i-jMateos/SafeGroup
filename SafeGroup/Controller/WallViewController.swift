@@ -24,6 +24,7 @@ class WallViewController: UIViewController {
     var posts: [EventPost] = []
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
         self.hideKeyboardWhenTappedAround()
@@ -45,8 +46,15 @@ class WallViewController: UIViewController {
             object: nil
         )
         
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         getPosts()
     }
+    
     
     func getPosts() {
         postsReference = db.collection("posts").document()

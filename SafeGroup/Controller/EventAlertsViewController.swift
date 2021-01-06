@@ -24,12 +24,16 @@ class EventAlertsViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         getAlertsForEvent()
     }
     
+    
     func getAlertsForEvent() {
         guard let eventDict = event.dictionary else { return }
-        
+        var alerts:[EventAlert] = []
         db.collection("alerts")
             .whereField("event", isEqualTo: eventDict)
             .getDocuments() { (querySnapshot, err) in
@@ -41,15 +45,19 @@ class EventAlertsViewController: UIViewController {
                         let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: [])
                         
                         guard let alert: EventAlert = try? JSONDecoder().decode(EventAlert.self, from: jsonData!) else { return }
-                        self.alerts.append(alert)
+                        alerts.append(alert)
                     }
                 }
-                
+                self.alerts = alerts
+                self.alerts.sort { (event1, event2) -> Bool in
+                    event1.timestamp > event2.timestamp
+                }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
             }
     }
+
 
     /*
     // MARK: - Navigation
