@@ -123,8 +123,9 @@ class ActiveEventViewController: UIViewController {
         })
         
         DispatchQueue.main.async {
-            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -208,8 +209,9 @@ class ActiveEventViewController: UIViewController {
 
         updateStrokesForAllNodes()
         DispatchQueue.main.async {
-            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -240,8 +242,9 @@ class ActiveEventViewController: UIViewController {
 
         updateStrokesForAllNodes()
         DispatchQueue.main.async {
-            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -358,7 +361,9 @@ class ActiveEventViewController: UIViewController {
         guard let user = User.currentUser else { return }
         guard let userData = try? JSONEncoder().encode(user) else { return }
         
-        PPKController.startDiscovery(withDiscoveryInfo: userData, stateRestoration: false)
+        if PPKController.isEnabled() {
+            PPKController.startDiscovery(withDiscoveryInfo: userData, stateRestoration: false)
+        }
     }
     /*
     // MARK: - Navigation
