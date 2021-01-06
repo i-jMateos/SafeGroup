@@ -160,6 +160,10 @@ extension EventsMapViewController: MKMapViewDelegate {
         
         self.performSegue(withIdentifier: "navigateToEventDetails", sender: event)
     }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        return nil
+    }
 }
 
 extension EventsMapViewController: EventDetailsDelegate {

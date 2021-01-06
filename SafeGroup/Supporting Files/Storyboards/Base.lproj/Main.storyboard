@@ -188,6 +188,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cmx-eq-oRn">
                                 <rect key="frame" x="0.0" y="619" width="375" height="48"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2U0-5s-wP4">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="JDz-rR-VMT"/>
+                                        </constraints>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Uid-qL-lIG">
                                         <rect key="frame" x="16" y="8" width="343" height="32"/>
                                         <subviews>
@@ -213,9 +220,12 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="Uid-qL-lIG" firstAttribute="leading" secondItem="cmx-eq-oRn" secondAttribute="leading" constant="16" id="6fq-ur-b82"/>
+                                    <constraint firstAttribute="trailing" secondItem="2U0-5s-wP4" secondAttribute="trailing" id="99i-DF-83P"/>
                                     <constraint firstAttribute="trailing" secondItem="Uid-qL-lIG" secondAttribute="trailing" constant="16" id="Gdi-MN-cST"/>
                                     <constraint firstItem="Uid-qL-lIG" firstAttribute="top" secondItem="cmx-eq-oRn" secondAttribute="top" constant="8" id="XP8-FM-FLv"/>
                                     <constraint firstAttribute="bottom" secondItem="Uid-qL-lIG" secondAttribute="bottom" constant="8" id="XXC-zM-t5w"/>
+                                    <constraint firstItem="2U0-5s-wP4" firstAttribute="leading" secondItem="cmx-eq-oRn" secondAttribute="leading" id="cQD-EM-G62"/>
+                                    <constraint firstItem="2U0-5s-wP4" firstAttribute="top" secondItem="cmx-eq-oRn" secondAttribute="top" id="iDi-UN-O98"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1072,6 +1082,9 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

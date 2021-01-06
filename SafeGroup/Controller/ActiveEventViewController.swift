@@ -57,8 +57,9 @@ class ActiveEventViewController: UIViewController {
         
         if !PPKController.isEnabled() {
             PPKController.enable(withConfiguration: "af27d1fd52024bba8dc866745ebda174", observer: self)
-            PPKController.enableProximityRanging()
         }
+        
+        PPKController.enableProximityRanging()
         
         self.participantsTableView.delegate = self
         self.participantsTableView.dataSource = self
@@ -79,6 +80,13 @@ class ActiveEventViewController: UIViewController {
             let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String
             
         }
+    }
+     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        PPKController.stopDiscovery()
+        PPKController.disable()
     }
     
     override func viewDidLayoutSubviews() {
@@ -115,6 +123,7 @@ class ActiveEventViewController: UIViewController {
         })
         
         DispatchQueue.main.async {
+            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
         }
     }
@@ -199,6 +208,7 @@ class ActiveEventViewController: UIViewController {
 
         updateStrokesForAllNodes()
         DispatchQueue.main.async {
+            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
         }
     }
@@ -230,6 +240,7 @@ class ActiveEventViewController: UIViewController {
 
         updateStrokesForAllNodes()
         DispatchQueue.main.async {
+            self.view.layoutIfNeeded()
             self.participantsTableView.reloadData()
         }
     }
@@ -348,12 +359,6 @@ class ActiveEventViewController: UIViewController {
         guard let userData = try? JSONEncoder().encode(user) else { return }
         
         PPKController.startDiscovery(withDiscoveryInfo: userData, stateRestoration: false)
-        
-        self.discoveryPeerButton.setTitle("Escuchando...", for: .disabled)
-        self.discoveryPeerButton.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            PPKController.stopDiscovery()
-        }
     }
     /*
     // MARK: - Navigation
@@ -574,7 +579,7 @@ extension ActiveEventViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = UITableViewCell()
         
         if let item = nearbyPeers[UInt(indexPath.row+1)], let signalStrengthName = self.getProximityStrengthName(item.peer.proximityStrength) {
-            cell.textLabel?.text = "\(item.user.displayName): \(signalStrengthName)"
+            cell.textLabel?.text = "\(item.user.displayName) (\(item.user.role?.rawValue.capitalized ?? "")): \(signalStrengthName)"
         }
         
         return cell
