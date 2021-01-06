@@ -50,15 +50,8 @@ class WallViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
         getPosts()
     }
-    
     
     func getPosts() {
         postsReference = db.collection("posts").document()

@@ -84,8 +84,10 @@ class ActiveEventViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        PPKController.stopDiscovery()
-        PPKController.disable()
+        if PPKController.isEnabled() {
+            PPKController.stopDiscovery()
+            PPKController.disable()
+        }
     }
     
     override func viewDidLayoutSubviews() {
