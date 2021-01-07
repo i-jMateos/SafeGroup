@@ -575,7 +575,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="wbJ-lv-lL4">
-                                <rect key="frame" x="16" y="241.5" width="343" height="150"/>
+                                <rect key="frame" x="16" y="241.5" width="343" height="194.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nombre" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ruZ-61-yP5">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
@@ -592,6 +592,12 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P9T-Gm-Ry2">
+                                        <rect key="frame" x="0.0" y="174" width="343" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8c0-aj-B7j">
@@ -633,6 +639,7 @@
                         <outlet property="imageProfileLabel" destination="8c0-aj-B7j" id="HP1-RW-qCR"/>
                         <outlet property="lastnameLabel" destination="Esn-4J-f5W" id="aLG-FU-ga8"/>
                         <outlet property="nameLabel" destination="ruZ-61-yP5" id="8cM-rg-AJl"/>
+                        <outlet property="roleLabel" destination="P9T-Gm-Ry2" id="Qtm-DW-NeP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9t-r0-pmn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

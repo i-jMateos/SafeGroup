@@ -19,6 +19,8 @@ class UserProfileViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     
+    @IBOutlet weak var roleLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +31,7 @@ class UserProfileViewController: UIViewController {
         nameLabel.text = currentUser?.firstname
         lastnameLabel.text = currentUser?.lastname
         emailTextField.text = currentUser?.email
+        roleLabel.text = "Rol: \(currentUser?.role?.rawValue.uppercased() ?? "")" 
     }
     
     @IBAction func signoutPressed(_ sender: Any) {
