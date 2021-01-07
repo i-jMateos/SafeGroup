@@ -75,7 +75,7 @@ class EventDetailsViewController: UIViewController {
             actionButton.setTitle("Eliminar evento", for: .normal)
             actionButton.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         } else {
-            actionButton.isHidden = event.endDate <= Date() && event.startDate >= Date()
+            actionButton.isHidden = event.endDate <= Date() && event.startDate <= Date()
             /// Comparar si el usuario se encuentra inscrito en el evento.
             if event.participants?.contains(where: { $0.email == user.email }) ?? false {
                 actionButton.setTitle("Anular registro", for: .normal)

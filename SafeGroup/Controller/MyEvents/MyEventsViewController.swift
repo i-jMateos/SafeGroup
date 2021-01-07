@@ -188,40 +188,37 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy HH:ss"
         
+        var event: Event?
+        
         /// Configurar celda
         switch indexPath.section {
         case 0:
-            cell.titleLabel.text = self.currentEvent?.name
-            cell.dateLabel.text = formatter.string(from: self.currentEvent!.startDate)
-            if let lat = currentEvent?.localitation.latitude, let lon = currentEvent?.localitation.longitude {
-                geocode(latitude: lat, longitude: lon) { (placemarks, error) in
-                    if let placemark = placemarks?.first {
-                        
-                        let address = [placemark.name ?? "",
-                                       placemark.locality ?? "",
-                                       placemark.postalCode ?? "",
-                                       placemark.country ?? ""].joined(separator: ", ")
-                        
-                        cell.subtitleLabel.text = address
-                    }
-                }
-            }
-             
-            if let imageUrl = self.currentEvent?.imageUrl {
-                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
-            }
+            event = currentEvent
         case 1:
-            cell.titleLabel.text = self.futureEvents?[indexPath.row].name
-            if let imageUrl = self.futureEvents?[indexPath.row].imageUrl {
-                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
-            }
+            event = self.futureEvents?[indexPath.row]
         case 2:
-            cell.titleLabel.text = self.pastEvents?[indexPath.row].name
-            if let imageUrl = self.pastEvents?[indexPath.row].imageUrl {
-                cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
-            }
+            event = self.self.pastEvents?[indexPath.row]
         default:
             break
+        }
+        cell.titleLabel.text = event?.name
+        cell.dateLabel.text = formatter.string(from: event!.startDate)
+        if let imageUrl = event?.imageUrl {
+            cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
+        }
+        
+        if let lat = event?.localitation.latitude, let lon = event?.localitation.longitude {
+            geocode(latitude: lat, longitude: lon) { (placemarks, error) in
+                if let placemark = placemarks?.first {
+                    
+                    let address = [placemark.name ?? "",
+                                   placemark.locality ?? "",
+                                   placemark.postalCode ?? "",
+                                   placemark.country ?? ""].joined(separator: ", ")
+                    
+                    cell.subtitleLabel.text = address
+                }
+            }
         }
         
         return cell
