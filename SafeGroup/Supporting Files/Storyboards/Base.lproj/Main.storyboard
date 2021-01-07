@@ -279,7 +279,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="GOB-BQ-fEU">
-                                                    <rect key="frame" x="74" y="16" width="226" height="36.5"/>
+                                                    <rect key="frame" x="74" y="16" width="226" height="69.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sh7-lA-1p7">
                                                             <rect key="frame" x="0.0" y="0.0" width="226" height="18"/>
@@ -293,6 +293,14 @@
                                                             <color key="textColor" systemColor="systemGrayColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkr-zB-cNs">
+                                                            <rect key="frame" x="0.0" y="40.5" width="226" height="29"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <state key="normal" title="Maps"/>
+                                                            <connections>
+                                                                <action selector="navigateToLocationButtonPressed:" destination="z1N-AQ-UeS" eventType="touchUpInside" id="RCi-P1-hQm"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q82-Cv-yei">
@@ -316,6 +324,7 @@
                                         <connections>
                                             <outlet property="alertMessageLabel" destination="CpZ-oQ-H8m" id="nkS-7H-Euc"/>
                                             <outlet property="alertTimestampLabel" destination="Q82-Cv-yei" id="D6Z-ct-a0Z"/>
+                                            <outlet property="navigateToLocationButton" destination="vkr-zB-cNs" id="gGH-Mh-I1V"/>
                                             <outlet property="userImageView" destination="3HB-kD-Tbh" id="571-wo-LeC"/>
                                             <outlet property="usernameLabel" destination="sh7-lA-1p7" id="zAM-ts-CRE"/>
                                         </connections>

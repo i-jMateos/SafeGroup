@@ -79,12 +79,17 @@ extension EventAlertsViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventAlertTableViewCell.reuseIdentifier, for: indexPath) as! EventAlertTableViewCell
         
+        cell.userImageView.backgroundColor = UIColor.lightGray
         let alert = alerts[indexPath.row]
         cell.usernameLabel.text = alert.message
         cell.alertMessageLabel.text =  "\(alert.user?.email ?? "")" //"\(alert.user?.firstname ?? "") \(alert.user?.lastname ?? "")"
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
         cell.alertTimestampLabel.text = dateFormatter.string(from: alert.timestamp)
+        
+        cell.alert = alert
+        
+        cell.navigateToLocationButton.isHidden = alert.type != .lost
         
         return cell
     }

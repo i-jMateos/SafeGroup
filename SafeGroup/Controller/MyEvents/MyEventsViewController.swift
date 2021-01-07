@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Kingfisher
+import MapKit
 
 class MyEventsViewController: UIViewController {
 
@@ -35,6 +36,8 @@ class MyEventsViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.estimatedRowHeight = 60
+        tableView.rowHeight = UITableView.automaticDimension
         
         let nib = UINib(nibName: MyEventTableViewCell.reuseIdentifier, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: MyEventTableViewCell.reuseIdentifier)
@@ -125,6 +128,16 @@ class MyEventsViewController: UIViewController {
         }
     }
     
+    func geocode(latitude: Double, longitude: Double, completion: @escaping (_ placemark: [CLPlacemark]?, _ error: Error?) -> Void)  {
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: latitude, longitude: longitude)) { placemark, error in
+            guard let placemark = placemark, error == nil else {
+                completion(nil, error)
+                return
+            }
+            completion(placemark, nil)
+        }
+    }
+    
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.getMyEvents()
     }
@@ -172,10 +185,28 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyEventTableViewCell.reuseIdentifier, for: indexPath) as! MyEventTableViewCell
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:ss"
+        
         /// Configurar celda
         switch indexPath.section {
         case 0:
             cell.titleLabel.text = self.currentEvent?.name
+            cell.dateLabel.text = formatter.string(from: self.currentEvent!.startDate)
+            if let lat = currentEvent?.localitation.latitude, let lon = currentEvent?.localitation.longitude {
+                geocode(latitude: lat, longitude: lon) { (placemarks, error) in
+                    if let placemark = placemarks?.first {
+                        
+                        let address = [placemark.name ?? "",
+                                       placemark.locality ?? "",
+                                       placemark.postalCode ?? "",
+                                       placemark.country ?? ""].joined(separator: ", ")
+                        
+                        cell.subtitleLabel.text = address
+                    }
+                }
+            }
+             
             if let imageUrl = self.currentEvent?.imageUrl {
                 cell.eventImageView?.kf.setImage(with: URL(string: imageUrl))
             }
